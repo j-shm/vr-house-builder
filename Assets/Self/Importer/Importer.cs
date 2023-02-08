@@ -14,7 +14,11 @@ public class Importer : MonoBehaviour
         Import();
     }
     async void Import() {
+<<<<<<< HEAD
         var filePath = $"C:/Users/{Environment.UserName}/Downloads/{filename}.glb";
+=======
+        var filePath = $"C:/Users/C4xy/Downloads/{filename}.glb";
+>>>>>>> cc683b13af6d26e8acb2a0bc2b6d8710f5ffba71
         byte[] data = File.ReadAllBytes(filePath);
         var gltf = new GltfImport();
         bool success = await gltf.LoadGltfBinary(data);
