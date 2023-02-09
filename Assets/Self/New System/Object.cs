@@ -12,6 +12,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(LineRenderer))]
 public class Object : MonoBehaviour
 {
+    protected string objectName;
+    protected string description;
+
     [SerializeField]
     protected bool isHeld;
     protected LineRenderer line;
@@ -27,6 +30,13 @@ public class Object : MonoBehaviour
     [SerializeField]
     public InputActionReference leftHand;
 
+    public string GetName() {
+        return objectName;
+    }
+    public string GetDesc() {
+        return description;
+    }
+    
     void Awake() {
         grid = FindObjectOfType<Grid>();
         line = GetComponent<LineRenderer>();
@@ -50,19 +60,16 @@ public class Object : MonoBehaviour
     }
 
  
-    void Start()
-    {
+    void Start() {
         Setup();
 
     }
     void Reset() {
         Setup();
     }
+
     protected void Setup() {
-
-        line.enabled = false;
-
-        
+        //SET UP INVIS
         var green = (Material)Resources.Load("GREEN", typeof(Material));
         if(invis.TryGetComponent(out MeshRenderer mRend)) {
             mRend.material = green;
@@ -73,23 +80,25 @@ public class Object : MonoBehaviour
                 mRendr.material = green;
             }
         }
-
         invis.SetActive(false);
+
+        //SETUP LINE RENDERER
+        line.enabled = false;
         line.startWidth = 0.1059608f;
         line.endWidth = 0.1059608f;
+        
+        //RIGIDBODY SETUP
         var rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
 
+        //CONTROLLER SETUP
         var xrG = gameObject.GetComponent<XRGrabInteractable>();
         xrG.throwOnDetach = false;
         xrG.trackRotation = false;
-
-        
-
-
         xrG.selectEntered.AddListener(OnSelectEntered);
         xrG.selectExited.AddListener(OnSelectExited);
         
+        //COLLIDER SETUP
         var mCol = gameObject.GetComponent<MeshCollider>();
         if(gameObject.TryGetComponent(out MeshFilter meshF)) {
             mCol.sharedMesh = meshF.mesh;
