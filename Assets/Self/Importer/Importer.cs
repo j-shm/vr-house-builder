@@ -8,18 +8,28 @@ using GLTFast;
 public class Importer : MonoBehaviour
 {
     [SerializeField]
-    private string filename; 
-    async void Start()
+    private string dirPath = $"C:/Users/{Environment.UserName}/Downloads/";
+
+    void Start()
     {
-        Import();
+        ImportAll();
     }
-    async void Import() {
-        var filePath = $"C:/Users/{Environment.UserName}/Downloads/{filename}.glb";
-        byte[] data = File.ReadAllBytes(filePath);
+
+    void ImportAll() {
+        if(System.IO.Directory.Exists(dirPath)) {
+            string[] files = System.IO.Directory.GetFiles(dirPath, "*.glb");
+            foreach(var file in files) {
+                Import(file);
+            }
+        }
+    }
+
+    async void Import(String file) {
+        byte[] data = File.ReadAllBytes(file);
         var gltf = new GltfImport();
         bool success = await gltf.LoadGltfBinary(data);
         if (success) {
-            var placedModel = new GameObject(filename).transform;
+            var placedModel = new GameObject(file.Split("/")[^1].Split(".")[0]).transform;
             success = await gltf.InstantiateMainSceneAsync( placedModel );
             if(success) {
                 var invis = Instantiate(placedModel.gameObject,placedModel.gameObject.transform);
@@ -27,8 +37,7 @@ public class Importer : MonoBehaviour
                 var comp = placedModel.gameObject.AddComponent<Object>();
                 comp.SetInvis(invis);
             }
-            
-
         }
     }
+
 }
