@@ -7,13 +7,26 @@ using GLTFast;
 
 public class Importer : MonoBehaviour
 {
+    private string dirPath = $"C:/Users/{Environment.UserName}/Downloads/stuff/";
+
     [SerializeField]
-    private string dirPath = $"C:/Users/{Environment.UserName}/Downloads/";
+    private bool startImport = true;
 
     void Start()
     {
-        ImportAll();
+        if(startImport) {
+            ImportAll();
+            startImport = false;
+        }
     }
+    void OnValidate()
+    {
+        if(startImport) {
+            ImportAll();
+            startImport = false;
+        }
+    }
+
 
     void ImportAll() {
         if(System.IO.Directory.Exists(dirPath)) {

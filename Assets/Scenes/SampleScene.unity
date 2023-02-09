@@ -1403,7 +1403,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f0297f59a354241a8f9950bd3dc4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dirPath: C:/Users/C4xy/Downloads/
+  dirPath: C:/Users/C4xy/Downloads/stuff
+  startImport: 1
 --- !u!4 &1232912974
 Transform:
   m_ObjectHideFlags: 0
