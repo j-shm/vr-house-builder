@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using UnityEngine;
 using GLTFast;
+using Newtonsoft.Json.Linq;
 
 public class Importer : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class Importer : MonoBehaviour
 
     [SerializeField]
     private string fileNames;
+        
+    [SerializeField]
+    private bool forceDetails = true;
 
     void Start()
     {
@@ -33,27 +37,54 @@ public class Importer : MonoBehaviour
         if(System.IO.Directory.Exists(dirPath)) {
             string[] files = System.IO.Directory.GetFiles(dirPath, "*.glb");
             foreach(var file in files) {
-                Import(file,false);
+                Import(file.Split("/")[^1].Split(".")[0]);
             }
         }
     }
 
-    async void Import(String file, bool name = true) {
+    async void Import(String file) {
+        string title = "";
+        string description= "";
+        string type= "";
 
-        byte[] data = name ? File.ReadAllBytes($"{dirPath}{file}.glb") : File.ReadAllBytes(file);
+        if(System.IO.File.Exists($"{dirPath}{file}.json")) {
+            
+            try {
+                JObject o1 = JObject.Parse(File.ReadAllText($"{dirPath}{file}.json"));
+                title = (string)o1["catalog"]["name"];
+                description = (string)o1["catalog"]["description"];
+                type = (string)o1["infomation"]["type"]; //either window or object at the minute
+            } catch(Exception e) {
+                if(forceDetails) {
+                    Debug.LogError(e);
+                    return;
+                }
+            }
+        } else if(forceDetails) {
+            return;
+        }
+        
+
+        byte[] data = File.ReadAllBytes($"{dirPath}{file}.glb");
 
         var gltf = new GltfImport();
         bool success = await gltf.LoadGltfBinary(data);
         if (success) {
-
-            var placedModel = name ? new GameObject(file).transform : new GameObject(file.Split("/")[^1].Split(".")[0]).transform;
-
+            var placedModel = new GameObject(file).transform;
             success = await gltf.InstantiateMainSceneAsync( placedModel );
             if(success) {
                 var invis = Instantiate(placedModel.gameObject,placedModel.gameObject.transform);
                 invis.gameObject.name = "Invis";
-                var comp = placedModel.gameObject.AddComponent<Object>();
-                comp.SetInvis(invis);
+                if(type == "window") {
+                    var comp = placedModel.gameObject.AddComponent<Window>();
+                    comp.SetDetails(new ObjectDetails(name,description,type));
+                    comp.SetInvis(invis);
+                } else {
+                    var comp = placedModel.gameObject.AddComponent<Object>();
+                    comp.SetDetails(new ObjectDetails(name,description,type));
+                    comp.SetInvis(invis);
+                }
+
             }
         }
     }

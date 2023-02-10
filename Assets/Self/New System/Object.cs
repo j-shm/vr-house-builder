@@ -10,8 +10,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(LineRenderer))]
 public class Object : MonoBehaviour
 {
-    protected string objectName;
-    protected string description;
 
     [SerializeField]
     protected bool isHeld;
@@ -28,13 +26,18 @@ public class Object : MonoBehaviour
     [SerializeField]
     public InputActionReference leftHand;
 
+    public ObjectDetails details;
+
     public string GetName() {
-        return objectName;
+        return details.GetName();
     }
     public string GetDesc() {
-        return description;
+        return details.GetDescription();
     }
-    
+    public void SetDetails(ObjectDetails details) {
+        this.details = details;
+    }
+
     void Awake() {
         grid = FindObjectOfType<Grid>();
         line = GetComponent<LineRenderer>();
@@ -117,7 +120,6 @@ public class Object : MonoBehaviour
 
 
         gameObject.layer = 6;
-
     }
 
     protected virtual void OnSelectEntered(SelectEnterEventArgs args) => SetHeld();
