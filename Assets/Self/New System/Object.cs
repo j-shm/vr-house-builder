@@ -211,6 +211,9 @@ public class Object : MonoBehaviour
         var descendants = assetModel.GetComponentsInChildren<Transform>();
         foreach (Transform desc in descendants)
         {
+            if(desc.gameObject.name == "EXCLUDE") {
+                continue;
+            }
             if (desc.TryGetComponent<Renderer>(out var childRenderer))
             {
                 //if initialized to renderer bounds yet
