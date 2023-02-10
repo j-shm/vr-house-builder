@@ -13,15 +13,18 @@ public class Importer : MonoBehaviour
     private bool importEverything = true;
 
     [SerializeField]
-    private string fileName;
+    private string fileNames;
 
     void Start()
     {
         if(importEverything) {
             ImportAll();
         } else {
-            if(fileName != "" || fileName != null) {
-                Import(fileName);
+            var files = fileNames.Split(",");
+            foreach(var fileName in files) {
+                if(fileName != "" || fileName != null) {
+                    Import(fileName);
+                }
             }
         }
     }
