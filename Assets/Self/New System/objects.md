@@ -27,4 +27,4 @@ Create a .json file in the same directory with the same name e.g window.glb wind
 
 ## Windows
 
-Window's should have any extra details defined as EXCLUDE. The main part of the window should be the only none exclude parts
+Window's should have any extra details defined as EXCLUDE. The main part of the window should be the only part that is not excluded. E.g a overhang should be excluded.
