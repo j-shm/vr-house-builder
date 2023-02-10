@@ -7,8 +7,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 //TODO CREATING THE INVIS OBJECT
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(MeshCollider))]
-[RequireComponent(typeof(XRGrabInteractable))]
 [RequireComponent(typeof(LineRenderer))]
 public class Object : MonoBehaviour
 {
@@ -91,29 +89,33 @@ public class Object : MonoBehaviour
         var rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
 
-        //CONTROLLER SETUP
-        var xrG = gameObject.GetComponent<XRGrabInteractable>();
-        xrG.throwOnDetach = false;
-        xrG.trackRotation = false;
-        xrG.selectEntered.AddListener(OnSelectEntered);
-        xrG.selectExited.AddListener(OnSelectExited);
+
         
         //COLLIDER SETUP
-        var mCol = gameObject.GetComponent<MeshCollider>();
         if(gameObject.TryGetComponent(out MeshFilter meshF)) {
+            var mCol = gameObject.AddComponent<MeshCollider>();
             mCol.sharedMesh = meshF.mesh;
         } else {
             var mshFilters = gameObject.GetComponentsInChildren<MeshFilter>(true);
 
             //check mesh collider perf at some point too might make more sense to do box colliders
-            if(mshFilters.Length == 1) {
+            if(mshFilters.Length == 2) {
+                var mCol = gameObject.AddComponent<MeshCollider>();
                 mCol.sharedMesh = mshFilters[0].mesh;
             }  else {
-                // we probably want to make a box collider if theres one more than one since
-                // i dont't think a mesh collider with mutliple is accurate
-                mCol.sharedMesh = mshFilters[0].mesh;
+                var meshes = transform.Find("Scene");
+                AddColliderAroundChildren(meshes.gameObject,gameObject);
             }
         }
+
+        //CONTROLLER SETUP
+        var xrG = gameObject.AddComponent<XRGrabInteractable>();
+        xrG.throwOnDetach = false;
+        xrG.trackRotation = false;
+        xrG.selectEntered.AddListener(OnSelectEntered);
+        xrG.selectExited.AddListener(OnSelectExited);
+
+
         gameObject.layer = 6;
 
     }
@@ -149,9 +151,6 @@ public class Object : MonoBehaviour
         if(Mathf.Abs(controllerValue) == 1) {
             Rotate(45*controllerValue);
         }
-        
-
-
     }
     protected void DrawGuide() {
         DrawLine();
@@ -184,4 +183,50 @@ public class Object : MonoBehaviour
         invis.SetActive(value);
         line.enabled = value;
     }
+
+    private Collider AddColliderAroundChildren(GameObject assetModel, GameObject boxModel = null)
+    {
+        if(boxModel == null) {
+            boxModel = assetModel;
+        }
+
+        var pos = assetModel.transform.localPosition;
+        var rot = assetModel.transform.localRotation;
+        var scale = assetModel.transform.localScale;
+
+        // need to clear out transforms while encapsulating bounds
+        assetModel.transform.localPosition = Vector3.zero;
+        assetModel.transform.localRotation = Quaternion.identity;
+        assetModel.transform.localScale = Vector3.one;
+
+        // start with root object's bounds
+        var bounds = new Bounds(Vector3.zero, Vector3.zero);
+        if (assetModel.transform.TryGetComponent<Renderer>(out var mainRenderer))
+        {
+            bounds = mainRenderer.bounds;
+        }
+
+        var descendants = assetModel.GetComponentsInChildren<Transform>();
+        foreach (Transform desc in descendants)
+        {
+            if (desc.TryGetComponent<Renderer>(out var childRenderer))
+            {
+                //if initialized to renderer bounds yet
+                if (bounds.extents == Vector3.zero)
+                    bounds = childRenderer.bounds;
+                bounds.Encapsulate(childRenderer.bounds);
+            }
+        }
+
+        var boxCol = boxModel.AddComponent<BoxCollider>();
+        boxCol.center = bounds.center - assetModel.transform.position;
+        boxCol.size = bounds.size;
+
+        // restore transforms
+        assetModel.transform.localPosition = pos;
+        assetModel.transform.localRotation = rot;
+        assetModel.transform.localScale = scale;
+        return boxCol;
+    }
+
 }

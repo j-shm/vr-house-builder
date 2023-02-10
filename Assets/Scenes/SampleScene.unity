@@ -185,6 +185,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6559155889621938124, guid: 55094bfe865a2584c908d82288f623e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -3503396607276044806, guid: 55094bfe865a2584c908d82288f623e4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -200,11 +205,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 55094bfe865a2584c908d82288f623e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7651554645386476107, guid: 55094bfe865a2584c908d82288f623e4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6509befec6530154b82ab6c46df4b3c4, type: 2}
+    - target: {fileID: 8729695851694193967, guid: 55094bfe865a2584c908d82288f623e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55094bfe865a2584c908d82288f623e4, type: 3}
 --- !u!1001 &104479063
@@ -278,6 +293,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: carpet
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ccf16f1343154e84a8863b1c32947d0e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccf16f1343154e84a8863b1c32947d0e, type: 3}
@@ -410,6 +430,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: energyking
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 38f26d3ec7a03e94ab5b95d468acb47a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5812370982548497326, guid: 38f26d3ec7a03e94ab5b95d468acb47a,
         type: 3}
@@ -1385,7 +1410,7 @@ GameObject:
   - component: {fileID: 1232912974}
   - component: {fileID: 1232912973}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: importer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1404,7 +1429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   importEverything: 0
-  fileName: duck
+  fileNames: penguintv,duck
 --- !u!4 &1232912974
 Transform:
   m_ObjectHideFlags: 0
@@ -2150,6 +2175,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f9ffa247c2f14d14fb690fd32db953f9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9ffa247c2f14d14fb690fd32db953f9, type: 3}
