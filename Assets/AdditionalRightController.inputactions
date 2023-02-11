@@ -1,0 +1,46 @@
+{
+    "name": "AdditionalRightController",
+    "maps": [
+        {
+            "name": "Right",
+            "id": "55080fc4-6665-4dd9-a01e-ccda408e8a79",
+            "actions": [
+                {
+                    "name": "UIOPEN",
+                    "type": "Button",
+                    "id": "6620fd16-1fe4-47ef-8edf-cc238a79bcdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "696e9adf-caa2-4eae-ab56-a858e481996e",
+                    "path": "<XRController>{RightHand}/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "New control scheme",
+                    "action": "UIOPEN",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "New control scheme",
+            "bindingGroup": "New control scheme",
+            "devices": [
+                {
+                    "devicePath": "<XRController>{RightHand}",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

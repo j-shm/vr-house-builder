@@ -32,7 +32,19 @@ public class Importer : MonoBehaviour
             }
         }
     }
-
+    public List<string> GetAllFiles() {
+        List<string> models = new List<string>();
+        if(System.IO.Directory.Exists(dirPath)) {
+            string[] files = System.IO.Directory.GetFiles(dirPath, "*.glb");
+            foreach(var file in files) {
+                models.Add(file.Split("/")[^1].Split(".")[0]);
+            }
+        }
+        return models;
+    }
+    public string GetDirPath() {
+        return dirPath;
+    }
     void ImportAll() {
         if(System.IO.Directory.Exists(dirPath)) {
             string[] files = System.IO.Directory.GetFiles(dirPath, "*.glb");
@@ -41,8 +53,14 @@ public class Importer : MonoBehaviour
             }
         }
     }
-
-    async void Import(String file) {
+    void ImportAll(List<string> files) {
+        if(System.IO.Directory.Exists(dirPath)) {
+            foreach(var file in files) {
+                Import(file);
+            }
+        }
+    }
+    public async void Import(String file) {
         string title = "";
         string description= "";
         string type= "";

@@ -20,11 +20,21 @@ public class ObjectTypes
         WallAttachement,
         WeddingArch,
         Window,
-        CurvedWin
-
+        CurvedWindow,
     }
     enum Color {
-
+        Red,
+        Pink,
+        Orange,
+        Yellow,
+        Green,
+        Blue,
+        Purple,
+        White,
+        Gray,
+        Black,
+        LightBrown,
+        DarkBrown,
     }
     enum Entertainment {
 
