@@ -71,13 +71,13 @@ public class Object : MonoBehaviour
 
     protected void Setup() {
         //SET UP INVIS
-        var green = (Material)Resources.Load("GREEN", typeof(Material));
+        Material green = (Material)Resources.Load("GREEN", typeof(Material));
         if(invis.TryGetComponent(out MeshRenderer mRend)) {
             mRend.material = green;
         }
-        var MeshRenderers = invis.GetComponentsInChildren<MeshRenderer>(true);
+        MeshRenderer[] MeshRenderers = invis.GetComponentsInChildren<MeshRenderer>(true);
         if(MeshRenderers.Length != 0) {
-            foreach(var mRendr in MeshRenderers) {
+            foreach(MeshRenderer mRendr in MeshRenderers) {
                 mRendr.material = green;
             }
         }
@@ -89,24 +89,24 @@ public class Object : MonoBehaviour
         line.endWidth = 0.1059608f;
         
         //RIGIDBODY SETUP
-        var rb = gameObject.GetComponent<Rigidbody>();
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
 
 
         
         //COLLIDER SETUP
         if(gameObject.TryGetComponent(out MeshFilter meshF)) {
-            var mCol = gameObject.AddComponent<MeshCollider>();
+            MeshCollider mCol = gameObject.AddComponent<MeshCollider>();
             mCol.sharedMesh = meshF.mesh;
         } else {
-            var mshFilters = gameObject.GetComponentsInChildren<MeshFilter>(true);
+            MeshFilter[] mshFilters = gameObject.GetComponentsInChildren<MeshFilter>(true);
 
             //check mesh collider perf at some point too might make more sense to do box colliders
             if(mshFilters.Length == 2) {
-                var mCol = gameObject.AddComponent<MeshCollider>();
+                MeshCollider mCol = gameObject.AddComponent<MeshCollider>();
                 mCol.sharedMesh = mshFilters[0].mesh;
             }  else {
-                var meshes = transform.Find("Scene");
+                Transform meshes = transform.Find("Scene");
                 AddColliderAroundChildren(meshes.gameObject,gameObject);
             }
         }

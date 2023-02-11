@@ -24,8 +24,8 @@ public class Importer : MonoBehaviour
         if(importEverything) {
             ImportAll();
         } else {
-            var files = fileNames.Split(",");
-            foreach(var fileName in files) {
+            string[] files = fileNames.Split(",");
+            foreach(string fileName in files) {
                 if(fileName != "" || fileName != null) {
                     Import(fileName);
                 }
@@ -36,7 +36,7 @@ public class Importer : MonoBehaviour
         List<string> models = new List<string>();
         if(System.IO.Directory.Exists(dirPath)) {
             string[] files = System.IO.Directory.GetFiles(dirPath, "*.glb");
-            foreach(var file in files) {
+            foreach(string file in files) {
                 models.Add(file.Split("/")[^1].Split(".")[0]);
             }
         }
@@ -48,14 +48,14 @@ public class Importer : MonoBehaviour
     void ImportAll() {
         if(System.IO.Directory.Exists(dirPath)) {
             string[] files = System.IO.Directory.GetFiles(dirPath, "*.glb");
-            foreach(var file in files) {
+            foreach(string file in files) {
                 Import(file.Split("/")[^1].Split(".")[0]);
             }
         }
     }
     void ImportAll(List<string> files) {
         if(System.IO.Directory.Exists(dirPath)) {
-            foreach(var file in files) {
+            foreach(string file in files) {
                 Import(file);
             }
         }
@@ -85,20 +85,20 @@ public class Importer : MonoBehaviour
 
         byte[] data = File.ReadAllBytes($"{dirPath}{file}.glb");
 
-        var gltf = new GltfImport();
+        GltfImport gltf = new GltfImport();
         bool success = await gltf.LoadGltfBinary(data);
         if (success) {
-            var placedModel = new GameObject(file).transform;
+            Transform placedModel = new GameObject(file).transform;
             success = await gltf.InstantiateMainSceneAsync( placedModel );
             if(success) {
-                var invis = Instantiate(placedModel.gameObject,placedModel.gameObject.transform);
+                GameObject invis = Instantiate(placedModel.gameObject,placedModel.gameObject.transform);
                 invis.gameObject.name = "Invis";
                 if(type == "window") {
-                    var comp = placedModel.gameObject.AddComponent<Window>();
+                    Window comp = placedModel.gameObject.AddComponent<Window>();
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                 } else {
-                    var comp = placedModel.gameObject.AddComponent<Object>();
+                    Object comp = placedModel.gameObject.AddComponent<Object>();
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                 }
