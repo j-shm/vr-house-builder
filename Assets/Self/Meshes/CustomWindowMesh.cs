@@ -139,5 +139,4 @@ public class CustomWindowMesh : MonoBehaviour
     public void OnValidate() {
         MakeWall();
     }
-    // Update is called once per frame
 }
