@@ -27,7 +27,6 @@ public class Object : MonoBehaviour
     public InputActionReference leftHand;
 
     public ObjectDetails details;
-    private Collider col;
 
 
     public string GetName() {
@@ -99,7 +98,6 @@ public class Object : MonoBehaviour
         //COLLIDER SETUP
         if(gameObject.TryGetComponent(out MeshFilter meshF)) {
             MeshCollider mCol = gameObject.AddComponent<MeshCollider>();
-            col = mCol;
             mCol.sharedMesh = meshF.mesh;
         } else {
             MeshFilter[] mshFilters = gameObject.GetComponentsInChildren<MeshFilter>(true);
@@ -107,11 +105,10 @@ public class Object : MonoBehaviour
             //check mesh collider perf at some point too might make more sense to do box colliders
             if(mshFilters.Length == 2) {
                 MeshCollider mCol = gameObject.AddComponent<MeshCollider>();
-                col = mCol;
                 mCol.sharedMesh = mshFilters[0].mesh;
             }  else {
                 Transform meshes = transform.Find("Scene");
-                col = AddColliderAroundChildren(meshes.gameObject,gameObject);
+                AddColliderAroundChildren(meshes.gameObject,gameObject);
             }
         }
 
@@ -184,12 +181,10 @@ public class Object : MonoBehaviour
     protected void ChangeDrawings() {
         invis.SetActive(!invis.activeSelf);
         line.enabled = !line.enabled;
-        col.enabled = !col.enabled;
     }
     protected void ChangeDrawings(bool value) {
         invis.SetActive(value);
         line.enabled = value;
-        col.enabled = value;
     }
 
     private Collider AddColliderAroundChildren(GameObject assetModel, GameObject boxModel = null)
