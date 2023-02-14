@@ -24,7 +24,8 @@ public class WallImporter : MonoBehaviour
 						1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 						1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 						1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+                        };
         PlaceWalls(Import(example,16),16);
     }
 
@@ -34,11 +35,22 @@ public class WallImporter : MonoBehaviour
         }
         for(int i =0; i< walls.Count;i++) {
             if(walls[i] != "o") {
-                var fuck = Instantiate(wall,
-                new Vector3 (i%GridSize,0,i/GridSize), 
-                Quaternion.Euler(new Vector3(0,walls[i] == "|" ? 90 : 0,0))
-                );
-                fuck.name = i.ToString() + " " + (i%GridSize).ToString();
+                if(walls[i] != "|" && walls[i] != "-") {
+                    Instantiate(wall,
+                    new Vector3 (i%GridSize,0,i/GridSize), 
+                    Quaternion.Euler(new Vector3(0,90,0))
+                    );
+                    Instantiate(wall,
+                    new Vector3 (i%GridSize,0,i/GridSize), 
+                    Quaternion.Euler(new Vector3(0,0,0))
+                    );
+                } else {
+                    Instantiate(wall,
+                    new Vector3 (i%GridSize,0,i/GridSize), 
+                    Quaternion.Euler(new Vector3(0,walls[i] == "|" ? 90 : 0,0))
+                    );
+                }
+
             }
         }
         
@@ -57,13 +69,41 @@ public class WallImporter : MonoBehaviour
                 continue;
             }
 
-            if(left >= 0 && walls[left] == 0) {
-                stringedwalls.Add("|");
-                continue;
+            
+            if(left >= 0) {
+                if(walls[left] == 0) {
+                    stringedwalls.Add("|");
+                    continue;
+                } 
+                /*
+                else {
+                    if(down < walls.Count && walls[down] == 1) {
+                        stringedwalls.Add("┐");
+                        continue;
+                    }
+                    if(up >= 0 && walls[up] == 1) {
+                        stringedwalls.Add("┘");
+                        continue;
+                    }
+                }*/
             }
-            if(right < walls.Count && walls[right] == 0) {
-                stringedwalls.Add("|");
-                continue;
+
+            if(right < walls.Count) {
+                if(walls[right] == 0) {
+                    stringedwalls.Add("|");
+                    continue;
+                } 
+                /*
+                else {
+                    if(down < walls.Count && walls[down] == 1) {
+                        stringedwalls.Add("┌");
+                        continue;
+                    }
+                    if(up >= 0 && walls[up] == 1) {
+                        stringedwalls.Add("└");
+                        continue;
+                    }
+                }*/
             }
 
             if(up >= 0 && walls[up] == 0) {
@@ -75,6 +115,7 @@ public class WallImporter : MonoBehaviour
                 stringedwalls.Add("-");
                 continue;
             }
+            stringedwalls.Add("o");
         }
         foreach(string wall in stringedwalls) {
             Debug.Log(stringedwalls);
