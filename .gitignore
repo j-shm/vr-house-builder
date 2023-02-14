@@ -63,3 +63,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Mm]odels/*
 /[Aa]ssets/[Mm]aterials/
 /[Aa]ssets/[Ss]elf/Objects/*
+/[Aa]ssets/[Ee]xamples/
