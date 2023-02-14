@@ -35,22 +35,12 @@ public class WallImporter : MonoBehaviour
         }
         for(int i =0; i< walls.Count;i++) {
             if(walls[i] != "o") {
-                if(walls[i] != "|" && walls[i] != "-") {
-                    Instantiate(wall,
-                    new Vector3 (i%GridSize,0,i/GridSize), 
-                    Quaternion.Euler(new Vector3(0,90,0))
-                    );
-                    Instantiate(wall,
-                    new Vector3 (i%GridSize,0,i/GridSize), 
-                    Quaternion.Euler(new Vector3(0,0,0))
-                    );
-                } else {
+                if(walls[i] == "|" || walls[i] == "-") {
                     Instantiate(wall,
                     new Vector3 (i%GridSize,0,i/GridSize), 
                     Quaternion.Euler(new Vector3(0,walls[i] == "|" ? 90 : 0,0))
                     );
                 }
-
             }
         }
         
@@ -61,53 +51,50 @@ public class WallImporter : MonoBehaviour
         for(int i=0; i< walls.Count; i++) {
             int right = i+1;
             int left = i-1;
-            int down = i+GridSize;
-            int up = i-GridSize;
+            int down = i+(GridSize);
+            int up = i-(GridSize);
+
+
+            //ALL OF THIS NEEDS FIXED
+            //IGNORE EVERYTHING AND REDO
+            //RN THE PROBLEM IS IT GOES AROUND
+            //XXX
+            //XOP
+            //ZXX
+            //P CHECKS Z INSTEAD OF CANCELLING
 
             if(walls[i] == 0) {
                 stringedwalls.Add("o");
                 continue;
             }
 
-            
-            if(left >= 0) {
-                if(walls[left] == 0) {
-                    stringedwalls.Add("|");
-                    continue;
-                } 
-                /*
-                else {
-                    if(down < walls.Count && walls[down] == 1) {
-                        stringedwalls.Add("┐");
-                        continue;
-                    }
-                    if(up >= 0 && walls[up] == 1) {
-                        stringedwalls.Add("┘");
-                        continue;
-                    }
-                }*/
+            if((left >= 0 && walls[left] == 1) && (left%GridSize != 0) && (down < walls.Count && walls[down] == 1)) {
+                stringedwalls.Add("┐");
+                continue;
             }
 
-            if(right < walls.Count) {
-                if(walls[right] == 0) {
-                    stringedwalls.Add("|");
-                    continue;
-                } 
-                /*
-                else {
-                    if(down < walls.Count && walls[down] == 1) {
-                        stringedwalls.Add("┌");
-                        continue;
-                    }
-                    if(up >= 0 && walls[up] == 1) {
-                        stringedwalls.Add("└");
-                        continue;
-                    }
-                }*/
+            if((left >= 0 && walls[left] == 1) && (left%GridSize != 0) && (up >= 0 && walls[up] == 1)) {
+                stringedwalls.Add("┘");
+                continue;
             }
 
-            if(up >= 0 && walls[up] == 0) {
-                stringedwalls.Add("-");
+            if((right < walls.Count && walls[right] == 1) && (right%GridSize != 0) && (down < walls.Count && walls[down] == 1)) {
+                stringedwalls.Add("┌");
+                continue;
+            }
+
+            if((right < walls.Count && walls[right] == 1) && (right%GridSize != 0) && (up >= 0 && walls[up] == 1)) {
+                stringedwalls.Add("└");
+                continue;
+            }
+
+            if(right < walls.Count && walls[right] == 0) {
+                stringedwalls.Add("|");
+                continue;
+            }
+
+            if((left >= 0 && walls[left] == 0)) {
+                stringedwalls.Add("|");
                 continue;
             }
 
@@ -115,7 +102,13 @@ public class WallImporter : MonoBehaviour
                 stringedwalls.Add("-");
                 continue;
             }
-            stringedwalls.Add("o");
+
+            if(up >= 0 && walls[up] == 0) {
+                stringedwalls.Add("-");
+                continue;
+            }
+            
+            stringedwalls.Add("z");
         }
         foreach(string wall in stringedwalls) {
             Debug.Log(stringedwalls);
