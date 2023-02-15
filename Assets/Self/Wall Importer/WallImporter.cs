@@ -36,10 +36,32 @@ public class WallImporter : MonoBehaviour
         for(int i =0; i< walls.Count;i++) {
             if(walls[i] != "o") {
                 if(walls[i] == "|" || walls[i] == "-") {
-                    Instantiate(wall,
-                    new Vector3 (i%GridSize,0,i/GridSize), 
+                    var thiswall = Instantiate(wall,
+                    new Vector3 (i%GridSize,0,GridSize - i/GridSize), 
                     Quaternion.Euler(new Vector3(0,walls[i] == "|" ? 90 : 0,0))
                     );
+                    thiswall.name = i.ToString();
+                } else {
+                    if(walls[i] == "┌") {
+                        Instantiate(wall,
+                        new Vector3 (i%GridSize,0,GridSize - i/GridSize), 
+                        Quaternion.Euler(new Vector3(0,90,0))
+                        );
+                        Instantiate(wall,
+                        new Vector3 (i%GridSize,0,GridSize - i/GridSize), 
+                        Quaternion.Euler(new Vector3(0,0,0))
+                        );
+                    } else if(walls[i] == "┐") {
+                        Instantiate(wall,
+                        new Vector3 (GridSize-1,0,GridSize), 
+                        Quaternion.Euler(new Vector3(0,90,0))
+                        );
+                    } else if(walls[i] == "└") {
+                        Instantiate(wall,
+                        new Vector3 (i%GridSize,0,GridSize - i/GridSize), 
+                        Quaternion.Euler(new Vector3(0,0,0))
+                        );
+                    }
                 }
             }
         }
@@ -55,25 +77,19 @@ public class WallImporter : MonoBehaviour
             int up = i-(GridSize);
 
 
-            //ALL OF THIS NEEDS FIXED
-            //IGNORE EVERYTHING AND REDO
-            //RN THE PROBLEM IS IT GOES AROUND
-            //XXX
-            //XOP
-            //ZXX
-            //P CHECKS Z INSTEAD OF CANCELLING
+            //only works for a square
 
             if(walls[i] == 0) {
                 stringedwalls.Add("o");
                 continue;
             }
 
-            if((left >= 0 && walls[left] == 1) && (left%GridSize != 0) && (down < walls.Count && walls[down] == 1)) {
+            if((left >= 0 && walls[left] == 1) && (left%GridSize != 15) && (down < walls.Count && walls[down] == 1)) {
                 stringedwalls.Add("┐");
                 continue;
             }
 
-            if((left >= 0 && walls[left] == 1) && (left%GridSize != 0) && (up >= 0 && walls[up] == 1)) {
+            if((left >= 0 && walls[left] == 1) && (left%GridSize != 15) && (up >= 0 && walls[up] == 1)) {
                 stringedwalls.Add("┘");
                 continue;
             }
@@ -111,6 +127,9 @@ public class WallImporter : MonoBehaviour
             stringedwalls.Add("z");
         }
         foreach(string wall in stringedwalls) {
+            if(wall == "z") {
+                Debug.LogError("problem with walls.");
+            }
             Debug.Log(stringedwalls);
         }
         return stringedwalls;
