@@ -19,7 +19,7 @@ public class Object : MonoBehaviour
     protected bool spotValid;
 
     [SerializeField]
-    private GameObject invis;
+    protected GameObject invis;
 
     protected Vector3 initalPos;
 
@@ -44,7 +44,7 @@ public class Object : MonoBehaviour
         line = GetComponent<LineRenderer>();
     }
     
-    public void SetHeld() {
+    public virtual void SetHeld() {
         if(spotValid) {
             Place();
         } else {
@@ -111,6 +111,23 @@ public class Object : MonoBehaviour
                 AddColliderAroundChildren(meshes.gameObject,gameObject);
             }
         }
+
+        if(invis.TryGetComponent(out MeshFilter meshX)) {
+            MeshCollider mCol = invis.AddComponent<MeshCollider>();
+            mCol.sharedMesh = meshX.mesh;
+        } else {
+            MeshFilter[] mshFilters = invis.GetComponentsInChildren<MeshFilter>(true);
+
+            //check mesh collider perf at some point too might make more sense to do box colliders
+            if(mshFilters.Length == 2) {
+                MeshCollider mCol = invis.AddComponent<MeshCollider>();
+                mCol.sharedMesh = mshFilters[0].mesh;
+            }  else {
+                Transform meshes = transform.Find("Scene");
+                AddColliderAroundChildren(meshes.gameObject,invis);
+            }
+        }
+
 
         //CONTROLLER SETUP
         var xrG = gameObject.AddComponent<XRGrabInteractable>();

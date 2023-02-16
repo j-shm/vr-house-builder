@@ -9,13 +9,16 @@ public class Wall : MonoBehaviour
     private GameObject baseWall;
     private MeshRenderer baseWallRend;
     private Collider wallCollider;
+
     [SerializeField]
     private GameObject currentWall;
+    private CSGWindow currentWallScript;
 
     [SerializeField]
     private List<GameObject> windows = new List<GameObject>();
     private Material mat;
     public bool cut;
+    private float buffer = 1f;
 
     private GameObject CutWall(GameObject wall, GameObject window) {
         Model result = CSG.Subtract(wall,window);
@@ -49,6 +52,7 @@ public class Wall : MonoBehaviour
             baseWall = this.gameObject;
         }
         baseWallRend = baseWall.GetComponent<MeshRenderer>();
+        wallCollider = baseWall.GetComponent<Collider>();
     }
 
     private void HandleCutting() {
@@ -59,7 +63,35 @@ public class Wall : MonoBehaviour
         currentWall.transform.parent = this.gameObject.transform;
         baseWallRend.enabled = false;
     }
+    
+    public Vector3 CalculateClosestPoint(GameObject window, GameObject heldWindow) {
+        window.SetActive(true);
+        Collider col = window.GetComponent<Collider>();
+        Vector3 startPoint = wallCollider.bounds.ClosestPoint(heldWindow.transform.position);
+        window.transform.position = startPoint;
+        if(wallCollider.bounds.max.y < col.bounds.max.y) {
+            window.transform.position -= new Vector3(0,(Mathf.Abs(wallCollider.bounds.max.y) - Mathf.Abs(col.bounds.max.y) - buffer),0);
+        }
+        if(wallCollider.bounds.min.y > col.bounds.min.y) {
+            window.transform.position += new Vector3(0,(Mathf.Abs(wallCollider.bounds.max.y)+Mathf.Abs(col.bounds.max.y) + buffer),0);
+        }
 
+        if(wallCollider.bounds.max.x < col.bounds.max.x) {
+            window.transform.position -= new Vector3((Mathf.Abs(wallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
+        }
+        if(wallCollider.bounds.min.x > col.bounds.min.x) {
+            window.transform.position += new Vector3((Mathf.Abs(wallCollider.bounds.max.x)+Mathf.Abs(col.bounds.max.x) + buffer),0,0);
+        }
+        
+        if(wallCollider.bounds.Contains(col.bounds.center)) {
+            window.SetActive(false);
+            return window.transform.position;
+        } else {
+            window.SetActive(false);
+            return new Vector3(-.01f,-.01f,-.01f);
+        }
+    }
+    
 
     public void AddWindow(GameObject window) {
         windows.Add(window);
