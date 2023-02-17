@@ -10,7 +10,7 @@ public class VRObject : MonoBehaviour
 
     public InputActionReference leftHand;
     public InputActionReference rightHand;
-    private float _rotateSpeed = 50f;
+    private float _rotateSpeed = 1000f;
 
     public void setHeld() {
         held = !held;
@@ -20,6 +20,6 @@ public class VRObject : MonoBehaviour
     {
         if(!held || !freeRotate) return;
         float controllerValue = leftHand.action.ReadValue<Vector2>().x;
-        transform.Rotate(Vector3.forward * Time.deltaTime * controllerValue * 1000);
+        transform.Rotate(Vector3.forward * Time.deltaTime * controllerValue * _rotateSpeed);
     }
 }

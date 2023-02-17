@@ -12,7 +12,7 @@ public class Wall : MonoBehaviour
 
     [SerializeField]
     private GameObject currentWall;
-    private CSGWindow currentWallScript;
+    private Window currentWallScript;
 
     [SerializeField]
     private List<GameObject> windows = new List<GameObject>();

@@ -7,8 +7,6 @@ public class Grid : MonoBehaviour
 
     [SerializeField]
     private float size = 1f;
-
-    private static int gridDims = 40;
     public Vector3 GetNearestPoint(Vector3 pos) {
         pos -= transform.position;
         int xCount = Mathf.RoundToInt(pos.x/size);

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CSGWindow : Object
+public class Window : Object
 {
     private Collider col;
     [SerializeField]
