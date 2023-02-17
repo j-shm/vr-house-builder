@@ -84,6 +84,8 @@ public class CSGWindow : Object
         if(spotValid) {
             DrawGuide();
             ChangeDrawings(true);
+        } else {
+            ChangeDrawings(false);
         }
     }
 
