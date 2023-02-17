@@ -15,6 +15,7 @@ public class CSGWindow : Object
     private Wall oldWallScript;
     [SerializeField]
     private GameObject MeshObject;
+    [SerializeField]
 
     void Start()
     {
@@ -112,12 +113,12 @@ public class CSGWindow : Object
         line.SetPosition(1,new Vector3(spot.x,spot.y + centerBound,spot.z));
     }
     public override void SetHeld() {
-        initalPos = transform.position;
+        
         if(spotValid) {
             Place();
         } else {
-            transform.position = initalPos;
             if(isHeld && oldWallScript != null) {
+                transform.position = initalPos;
                 oldWallScript.AddWindow(this.MeshObject);
                 oldWallScript.Cut();
             }
@@ -128,6 +129,7 @@ public class CSGWindow : Object
             oldWallScript.RemoveWindow(this.MeshObject);
             oldWallScript.Cut();
         }
+        initalPos = transform.position;
         ChangeDrawings(isHeld);
     }
 }
