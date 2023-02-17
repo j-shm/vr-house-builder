@@ -45,10 +45,11 @@ public class Object : MonoBehaviour
     }
     
     public virtual void SetHeld() {
+        initalPos = transform.position;
         if(spotValid) {
             Place();
         } else {
-            initalPos = transform.position;
+            transform.position = initalPos;
         }
         isHeld = !isHeld;
         ChangeDrawings(isHeld);

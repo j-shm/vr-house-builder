@@ -112,10 +112,11 @@ public class CSGWindow : Object
         line.SetPosition(1,new Vector3(spot.x,spot.y + centerBound,spot.z));
     }
     public override void SetHeld() {
+        initalPos = transform.position;
         if(spotValid) {
             Place();
         } else {
-            initalPos = transform.position;
+            transform.position = initalPos;
             if(isHeld && oldWallScript != null) {
                 oldWallScript.AddWindow(this.MeshObject);
                 oldWallScript.Cut();
