@@ -43,7 +43,7 @@ public class CSGWindow : Object
     private void Update() {
         if(!isHeld) return;
 
-        Collider[] walls = Physics.OverlapSphere(transform.position, 1f,(1<<7));
+        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
         GameObject closestObject = null;
         Wall script = null;
         float closestWallDist = -1;
