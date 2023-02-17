@@ -5,6 +5,7 @@ using UnityEngine;
 public class Window : Object
 {
     private Collider col;
+    private Collider invisCol;
     [SerializeField]
     public Vector3 size;
     private float centerBound;
@@ -21,6 +22,7 @@ public class Window : Object
     {
         Setup();
         col = GetComponent<Collider>();
+        invisCol = invis.GetComponent<Collider>();
         size = col.bounds.size;
         centerBound = col.bounds.center.y;
         fowardBound = size.z/2;
@@ -80,7 +82,7 @@ public class Window : Object
         }
 
         wallScript = script;
-        spot = wallScript.CalculateClosestPoint(invis,this.gameObject);
+        spot = wallScript.CalculateClosestPoint(invis,this.gameObject,invisCol);
         if(spot.Equals(new Vector3(-.01f,-.01f,-.01f))) {
             spotValid = false;
         } else {
