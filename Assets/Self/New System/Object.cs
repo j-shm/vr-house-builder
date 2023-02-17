@@ -45,11 +45,10 @@ public class Object : MonoBehaviour
     }
     
     public virtual void SetHeld() {
-        initalPos = transform.position;
         if(spotValid) {
             Place();
         } else {
-            transform.position = initalPos;
+            initalPos = transform.position;
         }
         isHeld = !isHeld;
         ChangeDrawings(isHeld);
@@ -95,40 +94,8 @@ public class Object : MonoBehaviour
         rb.isKinematic = true;
 
 
-        
-        //COLLIDER SETUP
-        if(gameObject.TryGetComponent(out MeshFilter meshF)) {
-            MeshCollider mCol = gameObject.AddComponent<MeshCollider>();
-            mCol.sharedMesh = meshF.mesh;
-        } else {
-            MeshFilter[] mshFilters = gameObject.GetComponentsInChildren<MeshFilter>(true);
-
-            //check mesh collider perf at some point too might make more sense to do box colliders
-            if(mshFilters.Length == 2) {
-                MeshCollider mCol = gameObject.AddComponent<MeshCollider>();
-                mCol.sharedMesh = mshFilters[0].mesh;
-            }  else {
-                Transform meshes = transform.Find("Scene");
-                AddColliderAroundChildren(meshes.gameObject,gameObject);
-            }
-        }
-
-        if(invis.TryGetComponent(out MeshFilter meshX)) {
-            MeshCollider mCol = invis.AddComponent<MeshCollider>();
-            mCol.sharedMesh = meshX.mesh;
-        } else {
-            MeshFilter[] mshFilters = invis.GetComponentsInChildren<MeshFilter>(true);
-
-            //check mesh collider perf at some point too might make more sense to do box colliders
-            if(mshFilters.Length == 1) {
-                MeshCollider mCol = invis.AddComponent<MeshCollider>();
-                mCol.sharedMesh = mshFilters[0].mesh;
-            }  else {
-                Transform meshes = transform.Find("Scene");
-                AddColliderAroundChildren(meshes.gameObject,invis);
-            }
-        }
-
+        CreateColliders(gameObject);
+        CreateColliders(invis,1);
 
         //CONTROLLER SETUP
         var xrG = gameObject.AddComponent<XRGrabInteractable>();
@@ -141,6 +108,23 @@ public class Object : MonoBehaviour
         gameObject.layer = 6;
     }
 
+    private void CreateColliders(GameObject objectToUse, int mshFilterLength = 2) {
+        if(objectToUse.TryGetComponent(out MeshFilter meshF)) {
+            MeshCollider mCol = objectToUse.AddComponent<MeshCollider>();
+            mCol.sharedMesh = meshF.mesh;
+        } else {
+            MeshFilter[] mshFilters = objectToUse.GetComponentsInChildren<MeshFilter>(true);
+
+            //check mesh collider perf at some point too might make more sense to do box colliders
+            if(mshFilters.Length == mshFilterLength) {
+                MeshCollider mCol = objectToUse.AddComponent<MeshCollider>();
+                mCol.sharedMesh = mshFilters[0].mesh;
+            }  else {
+                Transform meshes = transform.Find("Scene");
+                AddColliderAroundChildren(meshes.gameObject,objectToUse);
+            }
+        }
+    }
     protected virtual void OnSelectEntered(SelectEnterEventArgs args) => SetHeld();
 
     protected virtual void OnSelectExited(SelectExitEventArgs args) => SetHeld();
