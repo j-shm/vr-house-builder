@@ -36,8 +36,6 @@ public class CSGWindow : Object
             MeshObject = this.gameObject;
         }
         
-
-
     }
 
 
@@ -80,8 +78,6 @@ public class CSGWindow : Object
             ChangeDrawings(false);
             return;
         }
-
-
 
         wallScript = script;
         spot = wallScript.CalculateClosestPoint(invis,this.gameObject);
