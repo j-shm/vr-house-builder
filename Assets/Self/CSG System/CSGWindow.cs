@@ -43,10 +43,6 @@ public class CSGWindow : Object
 
     private void Update() {
 
-
-
-        if(!isHeld) return;
-        
         /*
         this is to stop the invis going really far away
         probably occurs because of the way the way the valid posistion is calculated
@@ -56,6 +52,7 @@ public class CSGWindow : Object
             invis.transform.position = this.gameObject.transform.position;
             spotValid = false;
         }
+        if(!isHeld) return;
 
         Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
         GameObject closestObject = null;
@@ -115,9 +112,17 @@ public class CSGWindow : Object
 
         //pos.z += fowardBound;
         gameObject.transform.position = spot;
-        
+
+
+
         wallScript.AddWindow(this.MeshObject);
         wallScript.Cut();
+        
+        //you have to add the foward bound after the hole is cut or it won't properly cut
+        gameObject.transform.position = new Vector3(gameObject.transform.position.x,
+        gameObject.transform.position.y,
+        gameObject.transform.position.z+fowardBound);
+
         oldWallScript = wallScript;
 
     }
@@ -131,11 +136,12 @@ public class CSGWindow : Object
             Place();
         } else {
             if(isHeld && oldWallScript != null) {
-                transform.position = initalPos;
+                transform.position = new Vector3(initalPos.x,initalPos.y,initalPos.z-fowardBound);
                 oldWallScript.AddWindow(this.MeshObject);
                 oldWallScript.Cut();
+                transform.position = new Vector3(initalPos.x,initalPos.y,initalPos.z+fowardBound);
             }
-        }
+            }
         
         isHeld = !isHeld;
         if(isHeld && oldWallScript != null) {
