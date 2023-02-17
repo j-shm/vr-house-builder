@@ -5,6 +5,8 @@ using System;
 using UnityEngine;
 using GLTFast;
 using Newtonsoft.Json.Linq;
+using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Importer : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class Importer : MonoBehaviour
         
     [SerializeField]
     private bool forceDetails = true;
+    public InputActionReference leftHand;
 
     void Start()
     {
@@ -101,6 +104,7 @@ public class Importer : MonoBehaviour
                     Object comp = placedModel.gameObject.AddComponent<Object>();
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
+                    comp.leftHand = leftHand;
                 }
 
             }
