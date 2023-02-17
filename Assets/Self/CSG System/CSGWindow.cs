@@ -43,6 +43,10 @@ public class CSGWindow : Object
 
     private void Update() {
 
+
+
+        if(!isHeld) return;
+        
         /*
         this is to stop the invis going really far away
         probably occurs because of the way the way the valid posistion is calculated
@@ -52,7 +56,6 @@ public class CSGWindow : Object
             invis.transform.position = this.gameObject.transform.position;
             spotValid = false;
         }
-        if(!isHeld) return;
 
         Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
         GameObject closestObject = null;
@@ -132,7 +135,7 @@ public class CSGWindow : Object
                 oldWallScript.AddWindow(this.MeshObject);
                 oldWallScript.Cut();
             }
-            }
+        }
         
         isHeld = !isHeld;
         if(isHeld && oldWallScript != null) {
