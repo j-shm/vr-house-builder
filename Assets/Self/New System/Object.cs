@@ -119,7 +119,7 @@ public class Object : MonoBehaviour
             MeshFilter[] mshFilters = invis.GetComponentsInChildren<MeshFilter>(true);
 
             //check mesh collider perf at some point too might make more sense to do box colliders
-            if(mshFilters.Length == 2) {
+            if(mshFilters.Length == 1) {
                 MeshCollider mCol = invis.AddComponent<MeshCollider>();
                 mCol.sharedMesh = mshFilters[0].mesh;
             }  else {
