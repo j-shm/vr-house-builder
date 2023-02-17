@@ -56,12 +56,16 @@ public class Wall : MonoBehaviour
     }
 
     private void HandleCutting() {
-        if(currentWall != null) {
+        if(currentWall != null && currentWall != baseWall) {
             Destroy(currentWall);
         }
         currentWall = CutWalls();
         currentWall.transform.parent = this.gameObject.transform;
-        baseWallRend.enabled = false;
+        if(currentWall != baseWall) {
+            baseWallRend.enabled = false;
+        } else {
+            baseWallRend.enabled = true;
+        }
     }
     
     public Vector3 CalculateClosestPoint(GameObject window, GameObject heldWindow) {
