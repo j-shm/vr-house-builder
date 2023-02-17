@@ -178,7 +178,7 @@ public class Object : MonoBehaviour
         return true;
     }
     private void Rotate(float angle = 45f) {
-        transform.rotation = transform.rotation * Quaternion.Euler(0, 0, angle);
+        transform.rotation = transform.rotation * Quaternion.Euler(0, angle, 0);
     }
     protected void ChangeDrawings() {
         invis.SetActive(!invis.activeSelf);
