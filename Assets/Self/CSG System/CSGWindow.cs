@@ -42,6 +42,16 @@ public class CSGWindow : Object
 
 
     private void Update() {
+
+        /*
+        this is to stop the invis going really far away
+        probably occurs because of the way the way the valid posistion is calculated
+        in Wall.CalculateClosestPoint()  
+        */
+        if(Vector3.Distance(this.gameObject.transform.position,invis.transform.position) > 10) {
+            invis.transform.position = this.gameObject.transform.position;
+            spotValid = false;
+        }
         if(!isHeld) return;
 
         Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));

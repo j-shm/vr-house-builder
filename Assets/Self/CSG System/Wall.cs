@@ -68,6 +68,7 @@ public class Wall : MonoBehaviour
         }
     }
     
+    //probably should be using an empty game object instead of the invis object.
     public Vector3 CalculateClosestPoint(GameObject window, GameObject heldWindow) {
         window.SetActive(true);
         Collider col = window.GetComponent<Collider>();
