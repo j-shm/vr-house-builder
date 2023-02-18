@@ -12,6 +12,8 @@ public class Wall : MonoBehaviour
 
     [SerializeField]
     private GameObject currentWall;
+    [SerializeField]
+    private Collider currentWallCollider;
     private Window currentWallScript;
 
     [SerializeField]
@@ -52,7 +54,7 @@ public class Wall : MonoBehaviour
             baseWall = this.gameObject;
         }
         baseWallRend = baseWall.GetComponent<MeshRenderer>();
-        wallCollider = baseWall.GetComponent<Collider>();
+        currentWallCollider = wallCollider = baseWall.GetComponent<Collider>();
     }
 
     private void HandleCutting() {
@@ -62,38 +64,49 @@ public class Wall : MonoBehaviour
         currentWall = CutWalls();
         currentWall.transform.parent = this.gameObject.transform;
         if(currentWall != baseWall) {
+            
+            
             baseWallRend.enabled = false;
+            wallCollider.enabled = false;
+
+            MeshCollider newCol = currentWall.AddComponent<MeshCollider>();
+            newCol.sharedMesh = currentWall.GetComponent<MeshFilter>().mesh;
+            currentWallCollider = newCol;
+            currentWall.layer = 7;
+            
         } else {
+            currentWallCollider = wallCollider;
             baseWallRend.enabled = true;
+            wallCollider.enabled = true;
         }
     }
     
     //probably should be using an empty game object instead of the invis object.
     public Vector3 CalculateClosestPoint(GameObject window, GameObject heldWindow, Collider col) {
+
         window.SetActive(true);
-        Vector3 startPoint = wallCollider.bounds.ClosestPoint(heldWindow.transform.position);
+        Vector3 startPoint = currentWallCollider.bounds.ClosestPoint(heldWindow.transform.position);
         window.transform.position = startPoint;
-        if(wallCollider.bounds.max.y < col.bounds.max.y) {
-            window.transform.position -= new Vector3(0,(Mathf.Abs(wallCollider.bounds.max.y) - Mathf.Abs(col.bounds.max.y) - buffer),0);
+        if(currentWallCollider.bounds.max.y < col.bounds.max.y) {
+            window.transform.position -= new Vector3(0,(Mathf.Abs(currentWallCollider.bounds.max.y) - Mathf.Abs(col.bounds.max.y) - buffer),0);
         }
-        if(wallCollider.bounds.min.y > col.bounds.min.y) {
-            window.transform.position += new Vector3(0,(Mathf.Abs(wallCollider.bounds.max.y)+Mathf.Abs(col.bounds.max.y) + buffer),0);
+        if(currentWallCollider.bounds.min.y > col.bounds.min.y) {
+            window.transform.position += new Vector3(0,(Mathf.Abs(currentWallCollider.bounds.max.y)+Mathf.Abs(col.bounds.max.y) + buffer),0);
+        }       
+        if(currentWallCollider.bounds.max.x < col.bounds.max.x) {
+            window.transform.position -= new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
+        }
+        if(currentWallCollider.bounds.min.x > col.bounds.min.x) {
+            window.transform.position += new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x)+Mathf.Abs(col.bounds.max.x) + buffer),0,0);
         }
 
-        if(wallCollider.bounds.max.x < col.bounds.max.x) {
-            window.transform.position -= new Vector3((Mathf.Abs(wallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
-        }
-        if(wallCollider.bounds.min.x > col.bounds.min.x) {
-            window.transform.position += new Vector3((Mathf.Abs(wallCollider.bounds.max.x)+Mathf.Abs(col.bounds.max.x) + buffer),0,0);
-        }
-        
-        if(wallCollider.bounds.Contains(col.bounds.center)) {
+        if(currentWallCollider.bounds.Contains(col.bounds.center)) {
             window.SetActive(false);
             return window.transform.position;
         } else {
             window.SetActive(false);
             return new Vector3(-.01f,-.01f,-.01f);
-        }
+        }       
     }
     
 
