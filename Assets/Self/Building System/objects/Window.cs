@@ -119,10 +119,6 @@ public class Window : Object
         wallScript.AddWindow(this.MeshObject);
         wallScript.Cut();
         
-        //you have to add the foward bound after the hole is cut or it won't properly cut
-        gameObject.transform.position = new Vector3(gameObject.transform.position.x,
-        gameObject.transform.position.y,
-        gameObject.transform.position.z+fowardBound);
 
         oldWallScript = wallScript;
 
