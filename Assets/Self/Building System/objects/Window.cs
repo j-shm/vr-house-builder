@@ -82,6 +82,9 @@ public class Window : Object
         }
 
         wallScript = script;
+        if(wallScript == null) {
+            wallScript = closestObject.transform.parent.gameObject.GetComponent<Wall>();
+        }
         spot = wallScript.CalculateClosestPoint(invis,this.gameObject,invisCol);
         if(spot.Equals(new Vector3(-.01f,-.01f,-.01f))) {
             spotValid = false;
@@ -134,7 +137,7 @@ public class Window : Object
             Place();
         } else {
             if(isHeld && oldWallScript != null) {
-                transform.position = new Vector3(initalPos.x,initalPos.y,initalPos.z-fowardBound);
+
                 oldWallScript.AddWindow(this.MeshObject);
                 oldWallScript.Cut();
                 transform.position = new Vector3(initalPos.x,initalPos.y,initalPos.z+fowardBound);
