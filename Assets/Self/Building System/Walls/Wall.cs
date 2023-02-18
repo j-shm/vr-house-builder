@@ -23,10 +23,12 @@ public class Wall : MonoBehaviour
     private float buffer = 1f;
 
     private GameObject CutWall(GameObject wall, GameObject window) {
-        Model result = CSG.Subtract(wall,window);
+        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-window.GetComponent<Window>().fowardBound);
+        Model result = CSG.Subtract(wall,window.GetComponent<Window>().MeshObject);
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+window.GetComponent<Window>().fowardBound);
         return newWall;
     }
 
@@ -111,6 +113,7 @@ public class Wall : MonoBehaviour
     
 
     public void AddWindow(GameObject window) {
+        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+window.GetComponent<Window>().fowardBound);
         windows.Add(window);
     }
     public void RemoveWindow(GameObject window) {

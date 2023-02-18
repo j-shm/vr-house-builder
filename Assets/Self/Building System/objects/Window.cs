@@ -9,13 +9,13 @@ public class Window : Object
     [SerializeField]
     public Vector3 size;
     private float centerBound;
-    private float fowardBound;
+    public float fowardBound;
 
     private Wall wallScript;
     private GameObject currentWall;
     private Wall oldWallScript;
     [SerializeField]
-    private GameObject MeshObject;
+    public GameObject MeshObject;
     [SerializeField]
 
     void Start()
@@ -112,11 +112,9 @@ public class Window : Object
         ChangeDrawings();
 
         //pos.z += fowardBound;
+
         gameObject.transform.position = spot;
-
-
-
-        wallScript.AddWindow(this.MeshObject);
+        wallScript.AddWindow(this.gameObject);
         wallScript.Cut();
         
 
@@ -134,15 +132,14 @@ public class Window : Object
         } else {
             if(isHeld && oldWallScript != null) {
 
-                oldWallScript.AddWindow(this.MeshObject);
+                oldWallScript.AddWindow(this.gameObject);
                 oldWallScript.Cut();
-                transform.position = new Vector3(initalPos.x,initalPos.y,initalPos.z+fowardBound);
             }
             }
         
         isHeld = !isHeld;
         if(isHeld && oldWallScript != null) {
-            oldWallScript.RemoveWindow(this.MeshObject);
+            oldWallScript.RemoveWindow(this.gameObject);
             oldWallScript.Cut();
         }
         initalPos = transform.position;
