@@ -131,7 +131,7 @@ public class Window : Object
             Place();
         } else {
             if(isHeld && oldWallScript != null) {
-
+                this.gameObject.transform.position = initalPos;
                 oldWallScript.AddWindow(this.windowScript);
                 oldWallScript.Cut();
             }
@@ -142,7 +142,7 @@ public class Window : Object
             oldWallScript.RemoveWindow(this.windowScript);
             oldWallScript.Cut();
         }
-        initalPos = transform.position;
+        initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z-fowardBound);
         ChangeDrawings(isHeld);
     }
 }
