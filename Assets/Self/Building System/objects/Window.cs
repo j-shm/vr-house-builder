@@ -16,11 +16,12 @@ public class Window : Object
     private Wall oldWallScript;
     [SerializeField]
     public GameObject MeshObject;
-    [SerializeField]
+    private Window windowScript;
 
     void Start()
     {
         Setup();
+        windowScript = GetComponent<Window>(); //this doesnt seem right but ii cant find method for doing it
         col = GetComponent<Collider>();
         invisCol = invis.GetComponent<Collider>();
         size = col.bounds.size;
@@ -113,7 +114,7 @@ public class Window : Object
 
 
         gameObject.transform.position = spot;
-        wallScript.AddWindow(this.gameObject);
+        wallScript.AddWindow(this.windowScript);
         wallScript.Cut();
         
 
@@ -131,14 +132,14 @@ public class Window : Object
         } else {
             if(isHeld && oldWallScript != null) {
 
-                oldWallScript.AddWindow(this.gameObject);
+                oldWallScript.AddWindow(this.windowScript);
                 oldWallScript.Cut();
             }
             }
         
         isHeld = !isHeld;
         if(isHeld && oldWallScript != null) {
-            oldWallScript.RemoveWindow(this.gameObject);
+            oldWallScript.RemoveWindow(this.windowScript);
             oldWallScript.Cut();
         }
         initalPos = transform.position;

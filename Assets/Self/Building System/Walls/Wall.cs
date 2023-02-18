@@ -17,25 +17,26 @@ public class Wall : MonoBehaviour
     private Window currentWallScript;
 
     [SerializeField]
-    private List<GameObject> windows = new List<GameObject>();
+    private List<Window> windows = new List<Window>();
     private Material mat;
     public bool cut;
     private float buffer = 1f;
 
-    private GameObject CutWall(GameObject wall, GameObject window) {
-        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-window.GetComponent<Window>().fowardBound);
-        Model result = CSG.Subtract(wall,window.GetComponent<Window>().MeshObject);
+    private GameObject CutWall(GameObject wall, Window windowScript) {
+        GameObject window = windowScript.gameObject;
+        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound);
+        Model result = CSG.Subtract(wall,windowScript.MeshObject);
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+window.GetComponent<Window>().fowardBound);
+        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound);
         return newWall;
     }
 
     private GameObject CutWalls() {
         GameObject returnWall = baseWall;
         GameObject destroyWall = null;
-        foreach(GameObject window in windows) {
+        foreach(Window window in windows) {
             if(returnWall != baseWall) {
                 destroyWall = returnWall;
             }
@@ -112,12 +113,13 @@ public class Wall : MonoBehaviour
     }
     
 
-    public void AddWindow(GameObject window) {
+    public void AddWindow(Window windowScript) {
+        GameObject window = windowScript.gameObject;
         window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+window.GetComponent<Window>().fowardBound);
-        windows.Add(window);
+        windows.Add(windowScript);
     }
-    public void RemoveWindow(GameObject window) {
-        windows.Remove(window);
+    public void RemoveWindow(Window windowScript) {
+        windows.Remove(windowScript);
     }
     public void Cut() {
         HandleCutting();
