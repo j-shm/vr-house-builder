@@ -111,7 +111,6 @@ public class Window : Object
 
         ChangeDrawings();
 
-        //pos.z += fowardBound;
 
         gameObject.transform.position = spot;
         wallScript.AddWindow(this.gameObject);
