@@ -115,7 +115,7 @@ public class Wall : MonoBehaviour
 
     public void AddWindow(Window windowScript) {
         GameObject window = windowScript.gameObject;
-        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+window.GetComponent<Window>().fowardBound);
+        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound);
         windows.Add(windowScript);
     }
     public void RemoveWindow(Window windowScript) {
