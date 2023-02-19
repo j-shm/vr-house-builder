@@ -29,7 +29,14 @@ public class Wall : MonoBehaviour
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound);
+        float wallRot = wall.transform.rotation.y;
+        Debug.Log(wallRot);
+        if(wallRot == 0) {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound);
+        } else  if(wallRot == 1 /*180degrees*/ ) { 
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound);
+        }
+        
         return newWall;
     }
 
