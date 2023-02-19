@@ -9,8 +9,7 @@ public class Window : Object
     [SerializeField]
     public Vector3 size;
     private float centerBound;
-    public float fowardBound;
-
+    public Vector2 fowardBound;
     private Wall wallScript;
     private GameObject currentWall;
     private Wall oldWallScript;
@@ -26,7 +25,8 @@ public class Window : Object
         invisCol = invis.GetComponent<Collider>();
         size = col.bounds.size;
         centerBound = col.bounds.center.y;
-        fowardBound = size.z/2;
+
+        fowardBound = new Vector2(size.z/2,size.x/2);
         
         if(col.GetType().Name.Equals("BoxCollider")) {
             Transform temp = transform.Find("Scene/cutout");
@@ -145,7 +145,11 @@ public class Window : Object
             oldWallScript.RemoveWindow(this.windowScript);
             oldWallScript.Cut();
         }
-        initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z-fowardBound);
+        if(this.gameObject.transform.rotation.y == 0 || this.gameObject.transform.rotation.y == 1) {
+            initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z-fowardBound[0]);
+        } else {
+            initalPos = new Vector3(transform.position.x-fowardBound[1],transform.position.y,transform.position.z);
+        }
         initalRotation = transform.rotation;
         ChangeDrawings(isHeld);
     }

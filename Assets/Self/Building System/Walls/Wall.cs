@@ -24,18 +24,32 @@ public class Wall : MonoBehaviour
 
     private GameObject CutWall(GameObject wall, Window windowScript) {
         GameObject window = windowScript.gameObject;
-        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound);
+        float wallRot = wall.transform.rotation.y;
+
+        if(wallRot == 0 || wallRot == 1) {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
+        } else {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y-windowScript.fowardBound[1],window.transform.position.z);
+        }
+
+    
         Model result = CSG.Subtract(wall,windowScript.MeshObject);
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        float wallRot = wall.transform.rotation.y;
-        Debug.Log(wallRot);
+
         if(wallRot == 0) {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound);
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
         } else  if(wallRot == 1 /*180degrees*/ ) { 
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound);
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
+        } else if(wallRot == 3) {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y+windowScript.fowardBound[1],window.transform.position.z);
+        } else if(wallRot == 4) {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y-windowScript.fowardBound[1],window.transform.position.z);
+        } else {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y+windowScript.fowardBound[1],window.transform.position.z);
         }
+        Debug.Log(wallRot);
         
         return newWall;
     }
@@ -97,24 +111,42 @@ public class Wall : MonoBehaviour
         window.SetActive(true);
         Vector3 startPoint = currentWallCollider.bounds.ClosestPoint(heldWindow.transform.position);
         window.transform.position = startPoint;
+        float windowRot =  window.transform.rotation.y;
+
+        //caculate y bounds
         if(currentWallCollider.bounds.max.y < col.bounds.max.y) {
             window.transform.position -= new Vector3(0,(Mathf.Abs(currentWallCollider.bounds.max.y) - Mathf.Abs(col.bounds.max.y) - buffer),0);
         }
         if(currentWallCollider.bounds.min.y > col.bounds.min.y) {
             window.transform.position += new Vector3(0,(Mathf.Abs(currentWallCollider.bounds.max.y)+Mathf.Abs(col.bounds.max.y) + buffer),0);
-        }       
-        if(currentWallCollider.bounds.max.x < col.bounds.max.x) {
-            window.transform.position -= new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
-        }
-        if(currentWallCollider.bounds.min.x > col.bounds.min.x) {
-            window.transform.position += new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x)+Mathf.Abs(col.bounds.max.x) + buffer),0,0);
+        
+        }  
+        //if its a - wall
+        if(windowRot == 0 || windowRot == 1) {
+            //calculate x
+            if(currentWallCollider.bounds.max.x < col.bounds.max.x) {
+                window.transform.position -= new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
+            }
+            if(currentWallCollider.bounds.min.x > col.bounds.min.x) {
+                window.transform.position += new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x)+Mathf.Abs(col.bounds.max.x) + buffer),0,0);
+            }
+        } else {
+            //calculate z
+            if(currentWallCollider.bounds.max.z < col.bounds.max.z) {
+                window.transform.position -= new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z) - Mathf.Abs(col.bounds.max.z) - buffer));
+            }
+            if(currentWallCollider.bounds.min.z > col.bounds.min.z) {
+                window.transform.position += new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z)+Mathf.Abs(col.bounds.max.z) + buffer));
+            }
         }
 
-        if(currentWallCollider.bounds.Contains(col.bounds.center)) {
+
+        if(currentWallCollider.bounds.Contains(col.bounds.center) ) {
             window.SetActive(false);
             return window.transform.position;
         } else {
             window.SetActive(false);
+            Debug.Log("here is the problem :(");
             return new Vector3(-.01f,-.01f,-.01f);
         }       
     }
@@ -122,7 +154,13 @@ public class Wall : MonoBehaviour
 
     public void AddWindow(Window windowScript) {
         GameObject window = windowScript.gameObject;
-        window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound);
+        float winRot = window.gameObject.transform.rotation.y;
+        if(winRot == 0 || winRot  == 1 ) {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
+        } else {
+            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y+windowScript.fowardBound[0],window.transform.position.z);
+        }
+       
         windows.Add(windowScript);
     }
     public void RemoveWindow(Window windowScript) {
