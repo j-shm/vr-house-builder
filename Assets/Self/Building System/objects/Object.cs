@@ -22,6 +22,7 @@ public class Object : MonoBehaviour
     protected GameObject invis;
 
     protected Vector3 initalPos;
+    protected Quaternion initalRotation;
 
     [SerializeField]
     public InputActionReference leftHand;
@@ -49,6 +50,7 @@ public class Object : MonoBehaviour
             Place();
         } else {
             initalPos = transform.position;
+            initalRotation = transform.rotation;
         }
         isHeld = !isHeld;
         ChangeDrawings(isHeld);
@@ -174,6 +176,7 @@ public class Object : MonoBehaviour
             transform.position = spot;
         } else {
             transform.position = initalPos;
+            initalRotation = transform.rotation;
         }
         return true;
     }

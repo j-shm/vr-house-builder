@@ -68,6 +68,7 @@ public class Window : Object
                 closestObject = wall.gameObject;
                 closestWallDist = newDist;
                 script = _script;
+                this.gameObject.transform.rotation = wall.gameObject.transform.rotation;
             }
         }
 
@@ -106,6 +107,7 @@ public class Window : Object
         if(!isHeld) return;
         if(!spotValid) {
             transform.position = initalPos;
+            transform.rotation = initalRotation;
             ChangeDrawings();
             return;
         }
@@ -132,6 +134,7 @@ public class Window : Object
         } else {
             if(isHeld && oldWallScript != null) {
                 this.gameObject.transform.position = initalPos;
+                transform.rotation = initalRotation;
                 oldWallScript.AddWindow(this.windowScript);
                 oldWallScript.Cut();
             }
@@ -143,6 +146,7 @@ public class Window : Object
             oldWallScript.Cut();
         }
         initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z-fowardBound);
+        initalRotation = transform.rotation;
         ChangeDrawings(isHeld);
     }
 }
