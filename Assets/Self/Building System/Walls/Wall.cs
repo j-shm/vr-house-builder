@@ -138,6 +138,7 @@ public class Wall : MonoBehaviour
             if(currentWallCollider.bounds.min.z > col.bounds.min.z) {
                 window.transform.position += new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z)+Mathf.Abs(col.bounds.max.z) + buffer));
             }
+            window.transform.position += new Vector3(0.05f,0,0);
         }
 
 
@@ -146,7 +147,6 @@ public class Wall : MonoBehaviour
             return window.transform.position;
         } else {
             window.SetActive(false);
-            Debug.Log("here is the problem :(");
             return new Vector3(-.01f,-.01f,-.01f);
         }       
     }
