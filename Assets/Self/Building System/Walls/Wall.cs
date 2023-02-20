@@ -29,7 +29,7 @@ public class Wall : MonoBehaviour
         if(wallRot == 0 || wallRot == 1) {
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
         } else {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y-windowScript.fowardBound[1],window.transform.position.z);
+            window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
         }
 
     
@@ -42,12 +42,8 @@ public class Wall : MonoBehaviour
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
         } else  if(wallRot == 1 /*180degrees*/ ) { 
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
-        } else if(wallRot == 3) {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y+windowScript.fowardBound[1],window.transform.position.z);
-        } else if(wallRot == 4) {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y-windowScript.fowardBound[1],window.transform.position.z);
         } else {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y+windowScript.fowardBound[1],window.transform.position.z);
+            window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
         }
         Debug.Log(wallRot);
         
