@@ -29,7 +29,7 @@ public class Wall : MonoBehaviour
         if(wallRot == 0 || wallRot == 1) {
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
         } else {
-            window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
+            //window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
         }
 
     
@@ -43,7 +43,7 @@ public class Wall : MonoBehaviour
         } else  if(wallRot == 1 /*180degrees*/ ) { 
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
         } else {
-            window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
+            //window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
         }
         Debug.Log(wallRot);
         
@@ -154,7 +154,7 @@ public class Wall : MonoBehaviour
         if(winRot == 0 || winRot  == 1 ) {
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
         } else {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y+windowScript.fowardBound[0],window.transform.position.z);
+            window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[0]+0.05f,window.transform.position.y,window.transform.position.z);
         }
        
         windows.Add(windowScript);
