@@ -28,8 +28,8 @@ public class Wall : MonoBehaviour
 
         if(wallRot == 0 || wallRot == 1) {
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
-        } else {
-            //window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
+        } else { // VERTICAL WALL
+            window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
         }
 
     
@@ -42,10 +42,9 @@ public class Wall : MonoBehaviour
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
         } else  if(wallRot == 1 /*180degrees*/ ) { 
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
-        } else {
-            //window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
+        } else if(wall.transform.eulerAngles.y == 90){
+            window.transform.position = new Vector3(window.transform.position.x-windowScript.gameObject.GetComponent<Collider>().bounds.size.x/2,window.transform.position.y,window.transform.position.z);
         }
-        Debug.Log(wallRot);
         
         return newWall;
     }
@@ -119,6 +118,7 @@ public class Wall : MonoBehaviour
         }  
         //if its a - wall
         if(windowRot == 0 || windowRot == 1) {
+            
             //calculate x
             if(currentWallCollider.bounds.max.x < col.bounds.max.x) {
                 window.transform.position -= new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
@@ -128,15 +128,19 @@ public class Wall : MonoBehaviour
             }
         } else {
             //calculate z
+            Debug.Log("this is yes");
             if(currentWallCollider.bounds.max.z < col.bounds.max.z) {
                 window.transform.position -= new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z) - Mathf.Abs(col.bounds.max.z) - buffer));
             }
             if(currentWallCollider.bounds.min.z > col.bounds.min.z) {
                 window.transform.position += new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z)+Mathf.Abs(col.bounds.max.z) + buffer));
             }
-            window.transform.position += new Vector3(0.05f,0,0);
+            if(window.transform.eulerAngles.y == 270f) {
+                window.transform.position += new Vector3(0.05f,0,0);
+            } else if(window.transform.eulerAngles.y == 90f) {
+                window.transform.position += new Vector3(-0.05f,0,0);
+            }
         }
-
 
         if(currentWallCollider.bounds.Contains(col.bounds.center) ) {
             window.SetActive(false);
@@ -154,7 +158,7 @@ public class Wall : MonoBehaviour
         if(winRot == 0 || winRot  == 1 ) {
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
         } else {
-            window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[0]+0.05f,window.transform.position.y,window.transform.position.z);
+            window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[1]+0.05f,window.transform.position.y,window.transform.position.z);
         }
        
         windows.Add(windowScript);

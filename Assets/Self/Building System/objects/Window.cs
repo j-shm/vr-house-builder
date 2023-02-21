@@ -148,7 +148,7 @@ public class Window : Object
         if(this.gameObject.transform.rotation.y == 0 || this.gameObject.transform.rotation.y == 1) {
             initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z-fowardBound[0]);
         } else {
-            initalPos = new Vector3(transform.position.x-fowardBound[1],transform.position.y,transform.position.z);
+            initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z);
         }
         initalRotation = transform.rotation;
         ChangeDrawings(isHeld);
