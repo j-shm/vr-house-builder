@@ -23,10 +23,15 @@ public class Grid : MonoBehaviour
         }
 
         if(invis == null) {
+            Collider[] groundHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<31));
+            if(groundHitColliders.Length != 0) {
+                return false;
+            }
             Collider[] hitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<6));
             if(hitColliders.Length == 0) {
                 return true;
             }
+
         } else {
             //invis get collider then check the colliders collosion instead so its more accurate:)
         }
