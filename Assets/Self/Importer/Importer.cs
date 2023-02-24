@@ -106,10 +106,6 @@ public class Importer : MonoBehaviour
                     comp.SetInvis(invis);
                     comp.leftHand = leftHand;
                 }
-                if(Application.isEditor) {
-                    placedModel.gameObject.AddComponent<SetObjectAsHeld>();
-                }
-
             }
         }
     }

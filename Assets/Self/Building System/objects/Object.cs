@@ -108,6 +108,10 @@ public class Object : MonoBehaviour
 
 
         gameObject.layer = 6;
+
+        if(Application.isEditor) {
+            this.gameObject.AddComponent<SetObjectAsHeld>();
+        }
     }
 
     private void CreateColliders(GameObject objectToUse, int mshFilterLength = 2) {
