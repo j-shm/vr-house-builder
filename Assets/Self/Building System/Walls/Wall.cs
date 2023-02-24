@@ -31,7 +31,6 @@ public class Wall : MonoBehaviour
         } else { // VERTICAL WALL
             window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
         }
-
     
         Model result = CSG.Subtract(wall,windowScript.MeshObject);
         GameObject newWall = new GameObject();
@@ -118,7 +117,6 @@ public class Wall : MonoBehaviour
         }  
         //if its a - wall
         if(windowRot == 0 || windowRot == 1) {
-            
             //calculate x
             if(currentWallCollider.bounds.max.x < col.bounds.max.x) {
                 window.transform.position -= new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
