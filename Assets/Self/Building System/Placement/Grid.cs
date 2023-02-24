@@ -17,12 +17,14 @@ public class Grid : MonoBehaviour
     }
 
     //this will soon be obselete with new method
-    public bool GetValidityPos(Vector3 pos, GameObject invis = null) {
+    public bool GetValidityPos(Vector3 pos, Vector3 playerPos, GameObject invis = null) {
         if(pos.x == -0.1f) {
             return false;
         }
 
         if(invis == null) {
+            //this all needs optimised to only calculate the collisons once.
+
             Collider[] groundHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<31));
             if(groundHitColliders.Length == 0) {
                 Debug.Log("no ground:<");
@@ -40,6 +42,13 @@ public class Grid : MonoBehaviour
                 Debug.Log("wall");
                 return false;
             }
+
+            
+            if (Physics.Linecast (playerPos,pos,out RaycastHit hitInfo,(1<<7))) {
+                Debug.Log(hitInfo.transform.gameObject + " " + pos);
+                return false;
+            }
+            
             return true;
         } else {
             //invis get collider then check the colliders collosion instead so its more accurate:)
@@ -54,14 +63,14 @@ public class Grid : MonoBehaviour
     */
     public Vector3 GetNearestValidPoint(Vector3 pos,int max = 10000) {
         Vector3 newPos = GetNearestPoint(pos);
-        if(GetValidityPos(newPos)) {
+        if(GetValidityPos(newPos,pos)) {
             return newPos;
         }
         /* THIS DOESNT FIND THE EASIEST*/
         for(int x = -1; x < 2; x++) {
             for(int z =-1; z < 2; z++) {
                 newPos = GetNearestPoint(new Vector3(pos.x+x,pos.y,pos.z+z));
-                if(GetValidityPos(newPos)) {
+                if(GetValidityPos(newPos,pos)) {
                     return newPos;
                 }
             }
