@@ -27,25 +27,19 @@ public class Grid : MonoBehaviour
 
             Collider[] groundHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<31));
             if(groundHitColliders.Length == 0) {
-                Debug.Log("no ground:<");
                 return false;
             }
             Collider[] hitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<6));
             if(hitColliders.Length != 0) {
-                foreach(var x in hitColliders) {
-                    Debug.Log(x);
-                }
                 return false;
             }
             Collider[] wallHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<7));
             if(wallHitColliders.Length != 0) {
-                Debug.Log("wall");
                 return false;
             }
 
             
             if (Physics.Linecast (playerPos,pos,out RaycastHit hitInfo,(1<<7))) {
-                Debug.Log(hitInfo.transform.gameObject + " " + pos);
                 return false;
             }
             
