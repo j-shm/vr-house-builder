@@ -24,14 +24,23 @@ public class Grid : MonoBehaviour
 
         if(invis == null) {
             Collider[] groundHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<31));
-            if(groundHitColliders.Length != 0) {
+            if(groundHitColliders.Length == 0) {
+                Debug.Log("no ground:<");
                 return false;
             }
             Collider[] hitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<6));
-            if(hitColliders.Length == 0) {
-                return true;
+            if(hitColliders.Length != 0) {
+                foreach(var x in hitColliders) {
+                    Debug.Log(x);
+                }
+                return false;
             }
-
+            Collider[] wallHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<7));
+            if(wallHitColliders.Length != 0) {
+                Debug.Log("wall");
+                return false;
+            }
+            return true;
         } else {
             //invis get collider then check the colliders collosion instead so its more accurate:)
         }
