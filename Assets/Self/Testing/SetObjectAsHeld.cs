@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class SetObjectAsHeld : MonoBehaviour
 {
-    Window script;
+    Object script;
     public bool isHeld;
     public bool done;
 
     void Start() {
-        script = this.gameObject.GetComponent<Window>();
+        script = this.gameObject.GetComponent<Object>();
+        if(script == null) {
+            script = this.gameObject.GetComponent<Window>();
+        }
     }
     void Update()
     {
