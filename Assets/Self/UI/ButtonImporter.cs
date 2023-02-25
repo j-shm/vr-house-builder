@@ -20,7 +20,8 @@ public class ButtonImporter : MonoBehaviour
         GameObject text = this.gameObject.transform.Find("Frontplate/AnimatedContent/Text").gameObject;
         TMP_Text textComp = text.GetComponent<TMP_Text>();
         textComp.text = model;
-        textComp.enableAutoSizing = true;
+        textComp.fontSize = 10; 
+        //textComp.enableAutoSizing = true; //i think auto sizing looks weird
         text.SetActive(true);
     }
 
