@@ -52,6 +52,8 @@ public class Object : MonoBehaviour
             if(initalPos != null && initalRotation != null) {
                 transform.position = transform.position;
                 transform.rotation = initalRotation;
+            } else {
+                Destroy(this.gameObject);
             }
         }
         isHeld = !isHeld;
@@ -60,7 +62,6 @@ public class Object : MonoBehaviour
             initalPos = transform.position;
             initalRotation = transform.rotation;
         }
-
     }
 
     public bool SetInvis(GameObject invis) {
