@@ -46,11 +46,11 @@ public class Object : MonoBehaviour
     }
     
     public virtual void SetHeld() {
-        if(spotValid) {
-            Place();
-        } else {
+        //if spot is valid place.
+        if(!(spotValid && Place())) {
             if(initalPos != null && initalRotation != null) {
-                transform.position = transform.position;
+                //go to the inital posistion
+                transform.position = initalPos;
                 transform.rotation = initalRotation;
             } else {
                 Destroy(this.gameObject);
