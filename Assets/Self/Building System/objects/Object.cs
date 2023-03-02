@@ -52,14 +52,15 @@ public class Object : MonoBehaviour
             if(initalPos != null && initalRotation != null) {
                 transform.position = transform.position;
                 transform.rotation = initalRotation;
-            } else {
-                initalPos = transform.position;
-                initalRotation = transform.rotation;
             }
-
         }
         isHeld = !isHeld;
         ChangeDrawings(isHeld);
+        if(isHeld) {
+            initalPos = transform.position;
+            initalRotation = transform.rotation;
+        }
+
     }
 
     public bool SetInvis(GameObject invis) {
