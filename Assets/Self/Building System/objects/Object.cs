@@ -49,12 +49,19 @@ public class Object : MonoBehaviour
         if(spotValid) {
             Place();
         } else {
-            initalPos = transform.position;
-            initalRotation = transform.rotation;
+            if(initalPos != null && initalRotation != null) {
+                transform.position = transform.position;
+                transform.rotation = initalRotation;
+            } else {
+                initalPos = transform.position;
+                initalRotation = transform.rotation;
+            }
+
         }
         isHeld = !isHeld;
         ChangeDrawings(isHeld);
     }
+
     public bool SetInvis(GameObject invis) {
         if(this.invis == null) {
             this.invis = invis;
@@ -105,6 +112,14 @@ public class Object : MonoBehaviour
         xrG.trackRotation = false;
         xrG.selectEntered.AddListener(OnSelectEntered);
         xrG.selectExited.AddListener(OnSelectExited);
+        
+        /* need to decide on whats better
+        if(true) {
+            xrG.movementType = XRBaseInteractable.MovementType.VelocityTracking;
+        } else {*/
+            xrG.movementType = XRBaseInteractable.MovementType.Instantaneous;
+        //}
+        
 
 
         gameObject.layer = 6;
@@ -112,6 +127,7 @@ public class Object : MonoBehaviour
         if(Application.isEditor) {
             this.gameObject.AddComponent<SetObjectAsHeld>();
         }
+
     }
 
     private void CreateColliders(GameObject objectToUse, int mshFilterLength = 2) {
@@ -176,12 +192,7 @@ public class Object : MonoBehaviour
     }
     private bool Place() {
         if(!isHeld) return false;
-        if(spotValid)  {
-            transform.position = spot;
-        } else {
-            transform.position = initalPos;
-            initalRotation = transform.rotation;
-        }
+        transform.position = spot;
         return true;
     }
     private void Rotate(float angle = 45f) {
@@ -195,7 +206,7 @@ public class Object : MonoBehaviour
         invis.SetActive(value);
         line.enabled = value;
     }
-
+    
     private Collider AddColliderAroundChildren(GameObject assetModel, GameObject boxModel = null)
     {
         if(boxModel == null) {
@@ -243,5 +254,4 @@ public class Object : MonoBehaviour
         assetModel.transform.localScale = scale;
         return boxCol;
     }
-
 }
