@@ -78,7 +78,11 @@ public class Importer : MonoBehaviour
                 
                 if(o1["light"] != null) {
                     string temporaryTransform = (string)o1["light"]["transform"];
-                    light.y = float.Parse(temporaryTransform.Split(",")[1])*10;  //x10 to add the scale factor of unity
+                    float scale = 10;
+                    if(o1["light"]["scale"] != null) {
+                        scale = float.Parse((string)o1["light"]["scale"]);
+                    }
+                    light.y = float.Parse(temporaryTransform.Split(",")[1])*scale;  //x10 to add the scale factor of unity
                 } 
             } catch(Exception e) {
                 if(forceDetails) {
