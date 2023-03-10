@@ -105,7 +105,6 @@ public class Importer : MonoBehaviour
             success = await gltf.InstantiateMainSceneAsync( placedModel );
             if(success) {
                 if(!light.Equals(new Vector3(0f,0f,0f))) {
-                    Debug.LogError("i am creating a light!");
                     GameObject lightGameObject = new GameObject("light");
                     lightGameObject.transform.parent = placedModel.gameObject.transform;
                     Light lightComp = lightGameObject.AddComponent<Light>();
