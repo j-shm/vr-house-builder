@@ -67,7 +67,7 @@ public class Importer : MonoBehaviour
         string title = "";
         string description= "";
         string type= "";
-
+        Vector3 light = new Vector3(0,0,0);
         if(System.IO.File.Exists($"{dirPath}{file}.json")) {
             
             try {
@@ -75,11 +75,17 @@ public class Importer : MonoBehaviour
                 title = (string)o1["catalog"]["name"];
                 description = (string)o1["catalog"]["description"];
                 type = (string)o1["infomation"]["type"]; //either window or object at the minute
+                
+                if(o1["light"] != null) {
+                    string temporaryTransform = (string)o1["light"]["transform"];
+                    light.y = float.Parse(temporaryTransform.Split(",")[1])*10;  //x10 to add the scale factor of unity
+                } 
             } catch(Exception e) {
                 if(forceDetails) {
                     Debug.LogError(e);
                     return;
                 }
+               
             }
         } else if(forceDetails) {
             return;
@@ -94,6 +100,13 @@ public class Importer : MonoBehaviour
             Transform placedModel = new GameObject(file).transform;
             success = await gltf.InstantiateMainSceneAsync( placedModel );
             if(success) {
+                if(!light.Equals(new Vector3(0f,0f,0f))) {
+                    Debug.LogError("i am creating a light!");
+                    GameObject lightGameObject = new GameObject("light");
+                    lightGameObject.transform.parent = placedModel.gameObject.transform;
+                    Light lightComp = lightGameObject.AddComponent<Light>();
+                    lightGameObject.transform.localPosition = light;
+                }
                 GameObject invis = Instantiate(placedModel.gameObject,placedModel.gameObject.transform);
                 invis.gameObject.name = "Invis";
                 if(type == "window") {
@@ -105,6 +118,7 @@ public class Importer : MonoBehaviour
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                     comp.leftHand = leftHand;
+                    
                 }
             }
         }
