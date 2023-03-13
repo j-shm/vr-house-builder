@@ -24,7 +24,6 @@ public class ImportUI : MonoBehaviour
         }
 
         foreach(string model in importer.GetAllFiles()) {
-
             GameObject button = Instantiate(actionButton,gameObject.transform);
             ButtonImporter buttonScript = button.AddComponent<ButtonImporter>();
             buttonScript.Setup(importer,model);
