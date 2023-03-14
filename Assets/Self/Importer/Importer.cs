@@ -22,6 +22,8 @@ public class Importer : MonoBehaviour
     private bool forceDetails = true;
     public InputActionReference leftHand;
 
+    public GameObject placedParticle;
+
     void Start()
     {
         if(importEverything) {
@@ -121,7 +123,7 @@ public class Importer : MonoBehaviour
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                     comp.leftHand = leftHand;
-                    
+                    comp.SetParticleSystem(placedParticle);
                 }
             }
         }

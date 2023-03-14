@@ -29,6 +29,8 @@ public class Object : MonoBehaviour
 
     public ObjectDetails details;
 
+    private GameObject placedParticle;
+
 
     public string GetName() {
         return details.GetName();
@@ -44,7 +46,10 @@ public class Object : MonoBehaviour
         grid = FindObjectOfType<Grid>();
         line = GetComponent<LineRenderer>();
     }
-    
+    public void SetParticleSystem(GameObject placedParticle) {
+        this.placedParticle = placedParticle;
+    }
+
     public virtual void SetHeld() {
         //if spot is valid place.
         if(!(spotValid && Place())) {
@@ -195,6 +200,7 @@ public class Object : MonoBehaviour
     private bool Place() {
         if(!isHeld) return false;
         transform.position = spot;
+        Instantiate(placedParticle,spot,Quaternion.identity);
         return true;
     }
     private void Rotate(float angle = 45f) {
