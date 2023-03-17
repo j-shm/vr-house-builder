@@ -105,6 +105,11 @@ public class Window : Object
 
     private void Place() {
         if(!isHeld) return;
+        
+        if(deleteButton.action.WasPressedThisFrame()) {
+            Kill();
+        }
+
         if(!spotValid) {
             transform.position = initalPos;
             transform.rotation = initalRotation;

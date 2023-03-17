@@ -163,7 +163,7 @@ public class Object : MonoBehaviour
     {
 
         if(!isHeld) return;
-        
+
         if(deleteButton.action.WasPressedThisFrame()) {
             Kill();
         }
@@ -268,7 +268,7 @@ public class Object : MonoBehaviour
         return boxCol;
     }
 
-    void Kill() {
+    protected void Kill() {
         Destroy(this.gameObject);
     }
 }
