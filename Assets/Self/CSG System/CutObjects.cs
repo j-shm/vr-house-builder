@@ -6,6 +6,7 @@ using Parabox.CSG;
 public class CutObjects : MonoBehaviour
 {
     public bool cut;
+    public bool deleteAfterCut;
     public GameObject objectA;
     public GameObject objectB;
     public GameObject objectResult;
@@ -25,6 +26,10 @@ public class CutObjects : MonoBehaviour
             composite.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
 
             objectResult = composite;
+            if(deleteAfterCut) {
+                Destroy(objectA);
+                Destroy(objectB);
+            }
 
         }
     }
