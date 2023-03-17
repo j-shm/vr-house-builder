@@ -168,13 +168,15 @@ public class Object : MonoBehaviour
         
         //get spot
         spot = grid.GetNearestValidPoint(transform.position);
+        Debug.Log(spot);
         spotValid = grid.GetValidityPos(spot,this.gameObject.transform.position);
-        
         //draw the gizmos
         if(spotValid) {
+            ChangeDrawings(true);
             DrawGuide();
+        } else {
+            ChangeDrawings(false);
         }
-
         //check for placing and rotating needs to be changed for vr port
         if(Input.GetMouseButtonDown(1)) {
             SetHeld();
