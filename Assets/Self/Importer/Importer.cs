@@ -21,7 +21,7 @@ public class Importer : MonoBehaviour
     [SerializeField]
     private bool forceDetails = true;
     public InputActionReference leftHand;
-
+    public InputActionReference deleteButton;
     public GameObject placedParticle;
 
     void Start()
@@ -118,11 +118,13 @@ public class Importer : MonoBehaviour
                     Window comp = placedModel.gameObject.AddComponent<Window>();
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
+                    comp.deleteButton = deleteButton;
                 } else {
                     Object comp = placedModel.gameObject.AddComponent<Object>();
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                     comp.leftHand = leftHand;
+                    comp.deleteButton = deleteButton;
                     comp.SetParticleSystem(placedParticle);
                 }
             }

@@ -27,6 +27,8 @@ public class Object : MonoBehaviour
     [SerializeField]
     public InputActionReference leftHand;
 
+    [SerializeField]
+    public InputActionReference deleteButton;
     public ObjectDetails details;
 
     private GameObject placedParticle;
@@ -120,12 +122,9 @@ public class Object : MonoBehaviour
         xrG.selectEntered.AddListener(OnSelectEntered);
         xrG.selectExited.AddListener(OnSelectExited);
         
-        /* need to decide on whats better
-        if(true) {
-            xrG.movementType = XRBaseInteractable.MovementType.VelocityTracking;
-        } else {*/
-            xrG.movementType = XRBaseInteractable.MovementType.Instantaneous;
-        //}
+
+        xrG.movementType = XRBaseInteractable.MovementType.Instantaneous;
+
         
 
 
@@ -162,6 +161,9 @@ public class Object : MonoBehaviour
 
     void Update()
     {
+        if(deleteButton.action.WasPressedThisFrame()) {
+            Kill();
+        }
         if(!isHeld) return;
         
         //get spot
@@ -261,5 +263,9 @@ public class Object : MonoBehaviour
         assetModel.transform.localRotation = rot;
         assetModel.transform.localScale = scale;
         return boxCol;
+    }
+
+    void Kill() {
+        Destroy(this.gameObject);
     }
 }
