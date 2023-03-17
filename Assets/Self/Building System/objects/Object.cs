@@ -168,7 +168,6 @@ public class Object : MonoBehaviour
         
         //get spot
         spot = grid.GetNearestValidPoint(transform.position);
-        Debug.Log(spot);
         spotValid = grid.GetValidityPos(spot,this.gameObject.transform.position);
         //draw the gizmos
         if(spotValid) {
