@@ -161,11 +161,13 @@ public class Object : MonoBehaviour
 
     void Update()
     {
+
+        if(!isHeld) return;
+        
         if(deleteButton.action.WasPressedThisFrame()) {
             Kill();
         }
-        if(!isHeld) return;
-        
+
         //get spot
         spot = grid.GetNearestValidPoint(transform.position);
         spotValid = grid.GetValidityPos(spot,this.gameObject.transform.position);
