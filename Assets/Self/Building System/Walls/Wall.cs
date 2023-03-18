@@ -22,17 +22,23 @@ public class Wall : MonoBehaviour
     public bool cut;
     private float buffer = 1f;
 
+
     private GameObject CutWall(GameObject wall, Window windowScript) {
         GameObject window = windowScript.gameObject;
         float wallRot = wall.transform.rotation.y;
-
-        GameObject cube = CreateCube(windowScript);
+        GameObject cube = null;
+        if(window.transform.eulerAngles.y == 0 || window.transform.eulerAngles.y == 180) {
+            cube = CreateCube(windowScript);
+        } else {
+            cube = CreateCube(windowScript);            
+        }
+        
     
         Model result = CSG.Subtract(wall,cube);
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        Destroy(cube);
+        //Destroy(cube);
         return newWall;
     }
 
@@ -164,19 +170,15 @@ public class Wall : MonoBehaviour
     }
 
     private GameObject CreateCube(Window baseWindow) {
-        return CubeCreator(baseWindow,true);
+        return CubeCreator(baseWindow);
     }
-    private GameObject CubeCreator(Window baseWindow, bool sidewaysWall, bool visual = false) {
+    private GameObject CubeCreator(Window baseWindow, bool visual = false) {
         var extension = 10;
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.localScale = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
         cube.transform.position = baseWindow.gameObject.GetComponent<Window>().GetPos();
-
-        if(sidewaysWall) {
-            cube.transform.localScale = new Vector3(cube.transform.localScale.x,cube.transform.localScale.y,extension);
-        } else {
-            cube.transform.localScale = new Vector3(extension,cube.transform.localScale.y,cube.transform.localScale.z);
-        }
+        cube.transform.rotation = baseWall.gameObject.transform.rotation;
+        cube.transform.localScale = new Vector3(baseWindow.gameObject.GetComponent<Window>().size.x,baseWindow.gameObject.GetComponent<Window>().size.y,extension);
 
         if(!visual) {
             cube.GetComponent<MeshRenderer>().enabled = false;
