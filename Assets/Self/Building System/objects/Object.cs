@@ -127,7 +127,6 @@ public class Object : MonoBehaviour
 
         
 
-
         gameObject.layer = 6;
 
         if(Application.isEditor) {

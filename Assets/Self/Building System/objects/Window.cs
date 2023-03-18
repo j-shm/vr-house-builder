@@ -17,6 +17,7 @@ public class Window : Object
     public GameObject MeshObject;
     private Window windowScript;
 
+    private GameObject center;
     void Start()
     {
         Setup();
@@ -25,6 +26,9 @@ public class Window : Object
         invisCol = invis.GetComponent<Collider>();
         size = col.bounds.size;
         centerBound = col.bounds.center.y;
+        center = transform.Find("center").gameObject;
+
+        center.transform.localPosition = new Vector3(0,centerBound,-col.bounds.max.z);
 
         fowardBound = new Vector2(size.z/2,size.x/2);
         
@@ -87,7 +91,7 @@ public class Window : Object
         if(wallScript == null) {
             wallScript = closestObject.transform.parent.gameObject.GetComponent<Wall>();
         }
-        spot = wallScript.CalculateClosestPoint(invis,this.gameObject,invisCol);
+        spot = wallScript.GetNearestPoint(this.gameObject.transform.position);
         if(spot.Equals(new Vector3(-.01f,-.01f,-.01f))) {
             spotValid = false;
         } else {
@@ -120,7 +124,7 @@ public class Window : Object
         ChangeDrawings();
 
 
-        gameObject.transform.position = spot;
+        GoToObjectFromChild();
         wallScript.AddWindow(this.windowScript);
         wallScript.Cut();
         
@@ -128,6 +132,14 @@ public class Window : Object
         oldWallScript = wallScript;
 
     }
+
+    void GoToObjectFromChild() {
+        Vector3 AbsoluteMovement = spot - 
+        center.transform.position;
+        AbsoluteMovement.y += centerBound;
+        this.transform.position += AbsoluteMovement;
+    }
+
     public override void DrawLine() {
         line.SetPosition(0,GetPos());
         line.SetPosition(1,new Vector3(spot.x,spot.y + centerBound,spot.z));
@@ -154,16 +166,8 @@ public class Window : Object
             oldWallScript.RemoveWindow(this.windowScript);
             oldWallScript.Cut();
         }
-        if(this.gameObject.transform.rotation.y == 0 || this.gameObject.transform.rotation.y == 1) {
-            initalPos = new Vector3(transform.position.x,transform.position.y,transform.position.z-fowardBound[0]);
-        } else {
-            if(initalRotation.eulerAngles.y == 90f) {
-                initalPos = new Vector3(transform.position.x-0.05f,transform.position.y,transform.position.z);
-            } else {
-                initalPos = new Vector3(transform.position.x+0.05f,transform.position.y,transform.position.z);
-            }
-            
-        }
+
+        initalPos = transform.position;
         initalRotation = transform.rotation;
         ChangeDrawings(isHeld);
     }

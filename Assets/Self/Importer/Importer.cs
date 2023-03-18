@@ -119,6 +119,9 @@ public class Importer : MonoBehaviour
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                     comp.deleteButton = deleteButton;
+
+                    GameObject centerPoint = new GameObject("center");
+                    centerPoint.transform.parent = placedModel.gameObject.transform;
                 } else {
                     Object comp = placedModel.gameObject.AddComponent<Object>();
                     comp.SetDetails(new ObjectDetails(name,description,type));

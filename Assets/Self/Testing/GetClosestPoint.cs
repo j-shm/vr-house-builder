@@ -7,6 +7,8 @@ public class GetClosestPoint : MonoBehaviour
     public GameObject toSee;
     public bool closestPoint;
     private LineRenderer cpline;
+    public bool goTo;
+    public GameObject child;
     void Start() {
         cpline = this.gameObject.AddComponent<LineRenderer>();
         cpline.endColor = Color.cyan;
@@ -16,9 +18,11 @@ public class GetClosestPoint : MonoBehaviour
     }
     void Update()
     {
+
         if(toSee == null) {
             return;
         }
+        this.gameObject.transform.rotation = toSee.transform.rotation;
         Vector3 point;
         if(closestPoint) {
             //HAVE TO USE THIS
@@ -31,5 +35,16 @@ public class GetClosestPoint : MonoBehaviour
 
         cpline.SetPosition(0,transform.position);
         cpline.SetPosition(1,point);
+
+        if(goTo && toSee != null) {
+            moveToYGameObject(point);
+            goTo = false;
+        }
     }
-}
+    void moveToYGameObject(Vector3 point)
+    {
+        Vector3 AbsoluteMovement = point - 
+        child.transform.position;
+        this.transform.position += AbsoluteMovement;
+    }
+    }

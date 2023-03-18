@@ -93,66 +93,9 @@ public class Wall : MonoBehaviour
         }
     }
     
-    //probably should be using an empty game object instead of the invis object.
-    public Vector3 CalculateClosestPoint(GameObject window, GameObject heldWindow, Collider col) {
-
-        window.SetActive(true);
-        Vector3 startPoint = currentWallCollider.bounds.ClosestPoint(heldWindow.transform.position);
-        window.transform.position = startPoint;
-        float windowRot =  window.transform.rotation.y;
-
-        //caculate y bounds
-        if(currentWallCollider.bounds.max.y < col.bounds.max.y) {
-            window.transform.position -= new Vector3(0,(Mathf.Abs(currentWallCollider.bounds.max.y) - Mathf.Abs(col.bounds.max.y) - buffer),0);
-        }
-        if(currentWallCollider.bounds.min.y > col.bounds.min.y) {
-            window.transform.position += new Vector3(0,(Mathf.Abs(currentWallCollider.bounds.max.y)+Mathf.Abs(col.bounds.max.y) + buffer),0);
-        
-        }  
-        //if its a - wall
-        if(windowRot == 0 || windowRot == 1) {
-            //calculate x
-            if(currentWallCollider.bounds.max.x < col.bounds.max.x) {
-                window.transform.position -= new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x) - Mathf.Abs(col.bounds.max.x) - buffer),0,0);
-            }
-            if(currentWallCollider.bounds.min.x > col.bounds.min.x) {
-                window.transform.position += new Vector3((Mathf.Abs(currentWallCollider.bounds.max.x)+Mathf.Abs(col.bounds.max.x) + buffer),0,0);
-            }
-        } else {
-            //calculate z
-            Debug.Log("this is yes");
-            if(currentWallCollider.bounds.max.z < col.bounds.max.z) {
-                window.transform.position -= new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z) - Mathf.Abs(col.bounds.max.z) - buffer));
-            }
-            if(currentWallCollider.bounds.min.z > col.bounds.min.z) {
-                window.transform.position += new Vector3(0,0,(Mathf.Abs(currentWallCollider.bounds.max.z)+Mathf.Abs(col.bounds.max.z) + buffer));
-            }
-            if(window.transform.eulerAngles.y == 270f) {
-                window.transform.position += new Vector3(0.05f,0,0);
-            } else if(window.transform.eulerAngles.y == 90f) {
-                window.transform.position += new Vector3(-0.05f,0,0);
-            }
-        }
-
-        if(currentWallCollider.bounds.Contains(col.bounds.center) ) {
-            window.SetActive(false);
-            return window.transform.position;
-        } else {
-            window.SetActive(false);
-            return new Vector3(-.01f,-.01f,-.01f);
-        }       
-    }
-    
-
     public void AddWindow(Window windowScript) {
         GameObject window = windowScript.gameObject;
-        float winRot = window.gameObject.transform.rotation.y;
-        if(winRot == 0 || winRot  == 1 ) {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
-        } else {
-            window.transform.position = new Vector3(window.transform.position.x+windowScript.fowardBound[1]+0.05f,window.transform.position.y,window.transform.position.z);
-        }
-       
+        float winRot = window.gameObject.transform.rotation.y;       
         windows.Add(windowScript);
     }
     public void RemoveWindow(Window windowScript) {
@@ -186,4 +129,13 @@ public class Wall : MonoBehaviour
         return cube;
     }
 
+
+    public Vector3 GetNearestPoint(Vector3 point) {
+        if(currentWallCollider != null) {
+            return this.currentWallCollider.bounds.ClosestPoint(point);
+        } else {
+            return this.wallCollider.bounds.ClosestPoint(point);
+        }
+
+    }
 }
