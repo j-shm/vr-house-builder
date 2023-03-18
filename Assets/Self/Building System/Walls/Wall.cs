@@ -26,6 +26,8 @@ public class Wall : MonoBehaviour
         GameObject window = windowScript.gameObject;
         float wallRot = wall.transform.rotation.y;
 
+        CreateCube(windowScript);
+
         if(wallRot == 0 || wallRot == 1) {
             window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
         } else { // VERTICAL WALL
@@ -173,6 +175,27 @@ public class Wall : MonoBehaviour
             Cut();
             cut = false;
         }
+    }
+
+    private GameObject CreateCube(Window baseWindow) {
+        return CubeCreator(baseWindow,true);
+    }
+    private GameObject CubeCreator(Window baseWindow, bool sidewaysWall, bool visual = false) {
+        var extension = 10;
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.transform.localScale = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
+        cube.transform.position = baseWindow.gameObject.GetComponent<Window>().GetPos();
+
+        if(sidewaysWall) {
+            cube.transform.localScale = new Vector3(cube.transform.localScale.x,cube.transform.localScale.y,extension);
+        } else {
+            cube.transform.localScale = new Vector3(extension,cube.transform.localScale.y,cube.transform.localScale.z);
+        }
+
+        if(!visual) {
+            cube.GetComponent<MeshRenderer>().enabled = false;
+        }
+        return cube;
     }
 
 }

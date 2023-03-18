@@ -16,6 +16,6 @@ public class MakeObject : MonoBehaviour
     public void CreateCube() {
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.localScale = col.bounds.size;
-        cube.transform.position = this.gameObject.transform.position;
+        cube.transform.position = col.gameObject.GetComponent<Window>().GetPos();
     }
 }
