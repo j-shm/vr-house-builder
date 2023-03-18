@@ -26,26 +26,12 @@ public class Wall : MonoBehaviour
         GameObject window = windowScript.gameObject;
         float wallRot = wall.transform.rotation.y;
 
-        CreateCube(windowScript);
-
-        if(wallRot == 0 || wallRot == 1) {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
-        } else { // VERTICAL WALL
-            window.transform.position = new Vector3(window.transform.position.x-windowScript.fowardBound[1],window.transform.position.y,window.transform.position.z);
-        }
+        GameObject cube = CreateCube(windowScript);
     
-        Model result = CSG.Subtract(wall,windowScript.MeshObject);
+        Model result = CSG.Subtract(wall,cube);
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-
-        if(wallRot == 0) {
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z+windowScript.fowardBound[0]);
-        } else  if(wallRot == 1 /*180degrees*/ ) { 
-            window.transform.position = new Vector3(window.transform.position.x,window.transform.position.y,window.transform.position.z-windowScript.fowardBound[0]);
-        } else if(wall.transform.eulerAngles.y == 90){
-            window.transform.position = new Vector3(window.transform.position.x-windowScript.gameObject.GetComponent<Collider>().bounds.size.x/2,window.transform.position.y,window.transform.position.z);
-        }
         
         return newWall;
     }
