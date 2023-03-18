@@ -129,12 +129,12 @@ public class Window : Object
 
     }
     public override void DrawLine() {
-        line.SetPosition(0,new Vector3(transform.position.x,transform.position.y + centerBound,transform.position.z));
+        line.SetPosition(0,GetPos());
         line.SetPosition(1,new Vector3(spot.x,spot.y + centerBound,spot.z));
     }
 
     public Vector3 GetPos() {
-        return new Vector3(transform.position.x,transform.position.y + centerBound, spot.z);
+        return new Vector3(transform.position.x,transform.position.y + centerBound, transform.position.z);
     }
     public override void SetHeld() {
         
