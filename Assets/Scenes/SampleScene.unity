@@ -2252,6 +2252,7 @@ GameObject:
   - component: {fileID: 1232912973}
   - component: {fileID: 1232912976}
   - component: {fileID: 1232912975}
+  - component: {fileID: 1232912977}
   m_Layer: 0
   m_Name: importer
   m_TagString: Untagged
@@ -2322,6 +2323,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   man: {fileID: 1232912975}
   doSave: 0
+--- !u!114 &1232912977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232912972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f4b862663bb46e4088ffcc676ddb957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  import: 0
+  importer: {fileID: 1232912973}
 --- !u!1 &1251911519
 GameObject:
   m_ObjectHideFlags: 0

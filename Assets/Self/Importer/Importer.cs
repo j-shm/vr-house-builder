@@ -65,7 +65,7 @@ public class Importer : MonoBehaviour
             }
         }
     }
-    public async void Import(String file) {
+    public async void Import(String file, float[] objPos = null, float[] objRot = null, float[] objScale = null) {
         string title = "";
         string description= "";
         string type= "";
@@ -133,7 +133,15 @@ public class Importer : MonoBehaviour
                     comp.SetParticleSystem(placedParticle);
                     comp.SetMan(man);
                 }
+                if(objPos != null) {
+                    placedModel.gameObject.transform.position = ArrayToVector(objPos);
+                    placedModel.gameObject.transform.eulerAngles = ArrayToVector(objRot);
+                    placedModel.gameObject.transform.localScale = ArrayToVector(objScale);
+                }
             }
         }
+    }
+    public Vector3 ArrayToVector(float[] vecArray) {
+        return new Vector3(vecArray[0],vecArray[1],vecArray[2]);
     }
 }
