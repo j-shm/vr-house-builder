@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.IO;
 
 public class SaveLevel : MonoBehaviour
 {
@@ -34,8 +35,16 @@ public class SaveLevel : MonoBehaviour
             serialObjectsList.Add(ObjectToSerialObject(obj));
         }
         SerialObjects serialObjects = new SerialObjects(serialObjectsList.ToArray()); 
-        string output = JsonConvert.SerializeObject(serialObjects);
-        Debug.Log(output);
+        string jsonoutput = JsonConvert.SerializeObject(serialObjects);
+        string savePath = Application.persistentDataPath + "/saves/";
+        if (!Directory.Exists(savePath)) {
+            Directory.CreateDirectory(savePath);
+        }
+
+        string saveName = "save.json"; // allow to be changed!
+
+        File.WriteAllText(savePath+saveName, jsonoutput);
+        
         return true;
     }
 
