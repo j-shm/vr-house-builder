@@ -23,7 +23,7 @@ public class Importer : MonoBehaviour
     public InputActionReference leftHand;
     public InputActionReference deleteButton;
     public GameObject placedParticle;
-
+    public ObjectManager man;
     void Start()
     {
         if(importEverything) {
@@ -106,6 +106,7 @@ public class Importer : MonoBehaviour
             Transform placedModel = new GameObject(file).transform;
             success = await gltf.InstantiateMainSceneAsync( placedModel );
             if(success) {
+                this.man.AddObject(placedModel.gameObject);
                 if(!light.Equals(new Vector3(0f,0f,0f))) {
                     GameObject lightGameObject = new GameObject("light");
                     lightGameObject.transform.parent = placedModel.gameObject.transform;
@@ -119,6 +120,7 @@ public class Importer : MonoBehaviour
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                     comp.deleteButton = deleteButton;
+                    comp.SetMan(man);
 
                     GameObject centerPoint = new GameObject("center");
                     centerPoint.transform.parent = placedModel.gameObject.transform;
@@ -129,6 +131,7 @@ public class Importer : MonoBehaviour
                     comp.leftHand = leftHand;
                     comp.deleteButton = deleteButton;
                     comp.SetParticleSystem(placedParticle);
+                    comp.SetMan(man);
                 }
             }
         }

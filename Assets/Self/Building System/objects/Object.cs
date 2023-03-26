@@ -33,6 +33,7 @@ public class Object : MonoBehaviour
 
     private GameObject placedParticle;
 
+    private ObjectManager man;
 
     public string GetName() {
         return details.GetName();
@@ -42,6 +43,9 @@ public class Object : MonoBehaviour
     }
     public void SetDetails(ObjectDetails details) {
         this.details = details;
+    }
+    public void SetMan(ObjectManager man) {
+        this.man = man;
     }
 
     void Awake() {
@@ -268,6 +272,7 @@ public class Object : MonoBehaviour
     }
 
     protected void Kill() {
+        man.RemoveObject(this.gameObject);
         Destroy(this.gameObject);
     }
 }
