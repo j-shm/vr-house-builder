@@ -16,7 +16,7 @@ public class LoadLevel : MonoBehaviour
         }
     }
 
-    void Import(string file) {
+    public void Import(string file) {
         string savePath = Application.persistentDataPath + "/saves/";
         if(System.IO.File.Exists($"{savePath}{file}.json")) {
             try {

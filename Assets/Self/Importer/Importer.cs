@@ -124,6 +124,10 @@ public class Importer : MonoBehaviour
 
                     GameObject centerPoint = new GameObject("center");
                     centerPoint.transform.parent = placedModel.gameObject.transform;
+                    if(objPos != null) { 
+                        comp.SetHeld();
+                        comp.SetHeld();
+                    }
                 } else {
                     Object comp = placedModel.gameObject.AddComponent<Object>();
                     comp.SetDetails(new ObjectDetails(name,description,type));
