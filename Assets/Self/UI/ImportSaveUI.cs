@@ -6,7 +6,7 @@ public class ImportSaveUI : MonoBehaviour
 {
     [SerializeField]
     private GameObject actionButton;  
-    string savePath = Application.persistentDataPath + "/saves";
+    
     void Start() {
         Populate();
     }  
@@ -25,6 +25,7 @@ public class ImportSaveUI : MonoBehaviour
     }    
     public string[] GetAllFiles() {
         List<string> models = new List<string>();
+        string savePath = Application.persistentDataPath + "/saves";
         if(System.IO.Directory.Exists(savePath)) {
             string[] files = System.IO.Directory.GetFiles(savePath, "*.json");
             Debug.Log(files);
