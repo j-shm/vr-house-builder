@@ -13,7 +13,7 @@ public class ButtonImporterSave : MonoBehaviour
         PressableButton buttonScript = gameObject.GetComponent<PressableButton>();
         buttonScript.selectEntered.AddListener(OnSelectEntered);
     }
-    public void Setup(string file) {
+    public void Setup(string file, LoadLevel loader) {
         this.file = file;
         GameObject text = this.gameObject.transform.Find("Frontplate/AnimatedContent/Text").gameObject;
         TMP_Text textComp = text.GetComponent<TMP_Text>();
@@ -21,9 +21,11 @@ public class ButtonImporterSave : MonoBehaviour
         textComp.fontSize = 10; 
         //textComp.enableAutoSizing = true; //i think auto sizing looks weird
         text.SetActive(true);
+        this.levelLoader = loader;
     }
 
     void Load() {
+        Debug.Log("fun");
         levelLoader.Import(file);
     }
 

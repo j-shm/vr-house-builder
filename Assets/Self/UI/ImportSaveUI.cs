@@ -6,7 +6,8 @@ public class ImportSaveUI : MonoBehaviour
 {
     [SerializeField]
     private GameObject actionButton;  
-    
+    [SerializeField]
+    private LoadLevel loader;
     void Start() {
         Populate();
     }  
@@ -19,7 +20,7 @@ public class ImportSaveUI : MonoBehaviour
         foreach(string file in GetAllFiles()) {
             GameObject button = Instantiate(actionButton,gameObject.transform);
             ButtonImporterSave buttonScript = button.AddComponent<ButtonImporterSave>();
-            buttonScript.Setup(file);
+            buttonScript.Setup(file,loader);
         }
 
     }    

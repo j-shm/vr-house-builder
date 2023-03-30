@@ -17,10 +17,9 @@ public class LoadLevel : MonoBehaviour
     }
 
     public void Import(string file) {
-        string savePath = Application.persistentDataPath + "/saves/";
-        if(System.IO.File.Exists($"{savePath}{file}.json")) {
+        if(System.IO.File.Exists(file)) {
             try {
-                JObject o1 = JObject.Parse(File.ReadAllText($"{savePath}{file}.json"));
+                JObject o1 = JObject.Parse(File.ReadAllText(file));
                 var objs = o1["objects"];
                 foreach(var obj in objs) {
                     string name = (string)obj["name"];
