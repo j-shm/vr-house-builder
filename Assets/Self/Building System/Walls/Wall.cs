@@ -20,7 +20,6 @@ public class Wall : MonoBehaviour
     private List<Window> windows = new List<Window>();
     private Material mat;
     public bool cut;
-    private float buffer = 1f;
 
 
     private GameObject CutWall(GameObject wall, Window windowScript) {
