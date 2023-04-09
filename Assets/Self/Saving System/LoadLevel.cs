@@ -38,12 +38,5 @@ public class LoadLevel : MonoBehaviour
         }
         
     }
-    private float[] StringToFloatArray(string input) {
-        string[] stringArray = input.Split(",");
-        float[] floatArray = new float[3];
-        floatArray[0] = float.Parse(stringArray[0]);
-        floatArray[1] = float.Parse(stringArray[1]);
-        floatArray[2] = float.Parse(stringArray[2]);
-        return floatArray;
-    }
+
 }
