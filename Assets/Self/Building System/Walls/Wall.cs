@@ -78,6 +78,7 @@ public class Wall : MonoBehaviour
 
             MeshCollider newCol = currentWall.AddComponent<MeshCollider>();
             newCol.sharedMesh = currentWall.GetComponent<MeshFilter>().mesh;
+            newCol.convex = true;
             currentWallCollider = newCol;
             currentWall.layer = 7;
             
@@ -126,23 +127,42 @@ public class Wall : MonoBehaviour
 
 
     public Vector3 GetNearestPoint(Vector3 point) {
-        if(currentWallCollider != null) {
+        if(currentWallCollider != null)
             return this.currentWallCollider.ClosestPoint(point);
-        }
         return this.wallCollider.ClosestPoint(point);
     }
 
-
+    
     public Vector3 GetNearestValidPoint(Window baseWindow, Vector3 point) {
         
         Vector3 nearpoint = GetNearestPoint(point);
+        Debug.Log(nearpoint);
+
+        //TODO: REMOVE FOR TESTING ONLY
+        temppointfortesing = nearpoint;
+        tempwindowfortesting = baseWindow.gameObject;
 
         /*
         GameObject cube = CubeCreator(baseWindow);
-
         Collider col = cube.GetComponent<Collider>();
         */
-
+        foreach(var hit in Physics.OverlapBox(nearpoint,baseWindow.gameObject.transform.localScale / 2, Quaternion.identity)) {
+            if(hit.gameObject.layer == LayerMask.NameToLayer("Object") && hit.gameObject != baseWindow.gameObject) {
+                hit.gameObject.name += " problem!";
+               return new Vector3(-.01f,-.01f,-.01f);
+            }
+        }
         return nearpoint;
+    }
+    Vector3 temppointfortesing;
+    GameObject tempwindowfortesting;
+    void OnDrawGizmosSelected()
+    {
+        if(temppointfortesing != null && tempwindowfortesting != null) {
+            Debug.Log("we drawing:)");
+            Gizmos.color = new Color(0.75f, 0.0f, 0.0f, 0.75f);
+            Gizmos.DrawWireCube(temppointfortesing, tempwindowfortesting.transform.localScale);
+        }
+
     }
 }
