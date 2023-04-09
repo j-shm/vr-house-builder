@@ -27,18 +27,14 @@ public class Wall : MonoBehaviour
         GameObject window = windowScript.gameObject;
         float wallRot = wall.transform.rotation.y;
         GameObject cube = null;
-        if(window.transform.eulerAngles.y == 0 || window.transform.eulerAngles.y == 180) {
-            cube = CreateCube(windowScript);
-        } else {
-            cube = CreateCube(windowScript);            
-        }
+        cube = CreateCube(windowScript);     
         
     
         Model result = CSG.Subtract(wall,cube);
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        //Destroy(cube);
+        Destroy(cube);
         return newWall;
     }
 
@@ -138,5 +134,17 @@ public class Wall : MonoBehaviour
             return this.wallCollider.ClosestPoint(point);
         }
 
+    }
+
+
+    public Vector3 GetNearestValidPoint(Window baseWindow, Vector3 point) {
+        
+        Vector3 nearpoint = GetNearestPoint(point);
+
+        GameObject cube = CubeCreator(baseWindow);
+
+        Collider col = cube.GetComponent<Collider>();
+
+        return nearpoint;
     }
 }

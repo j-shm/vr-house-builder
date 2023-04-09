@@ -125,8 +125,7 @@ public class Importer : MonoBehaviour
                     GameObject centerPoint = new GameObject("center");
                     centerPoint.transform.parent = placedModel.gameObject.transform;
                     if(objPos != null) { 
-                        comp.SetHeld();
-                        comp.SetHeld();
+                        StartCoroutine(SetHeldOfObjectWithWait(comp));
                     }
                 } else {
                     Object comp = placedModel.gameObject.AddComponent<Object>();
@@ -145,6 +144,13 @@ public class Importer : MonoBehaviour
             }
         }
     }
+    //if you do it instantly it wont cut the wall out.
+    IEnumerator SetHeldOfObjectWithWait(Window comp) {
+        comp.SetHeld();
+        yield return new WaitForSeconds(0.2f);
+        comp.SetHeld();
+    }
+
     public Vector3 ArrayToVector(float[] vecArray) {
         return new Vector3(vecArray[0],vecArray[1],vecArray[2]);
     }

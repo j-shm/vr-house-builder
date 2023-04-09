@@ -12,7 +12,7 @@ public class LoadLevel : MonoBehaviour
     {
         if(import) {
             import = false;
-            Import("save");
+            Import(Application.persistentDataPath + "/saves/save.json");
         }
     }
 

@@ -91,7 +91,9 @@ public class Window : Object
         if(wallScript == null) {
             wallScript = closestObject.transform.parent.gameObject.GetComponent<Wall>();
         }
-        spot = wallScript.GetNearestPoint(this.gameObject.transform.position);
+
+        spot = wallScript.GetNearestValidPoint(this.windowScript,this.gameObject.transform.position);
+        Debug.Log(spot);
         if(spot.Equals(new Vector3(-.01f,-.01f,-.01f))) {
             spotValid = false;
         } else {
