@@ -48,15 +48,6 @@ public class Window : Object
 
     private void Update() {
 
-        /*
-        this is to stop the invis going really far away
-        probably occurs because of the way the way the valid posistion is calculated
-        in Wall.CalculateClosestPoint()  
-        */
-        if(Vector3.Distance(this.gameObject.transform.position,invis.transform.position) > 10) {
-            invis.transform.position = this.gameObject.transform.position;
-            spotValid = false;
-        }
         if(!isHeld) return;
 
         Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
@@ -72,7 +63,22 @@ public class Window : Object
                 closestObject = wall.gameObject;
                 closestWallDist = newDist;
                 script = _script;
-                this.gameObject.transform.rotation = wall.gameObject.transform.rotation;
+
+                //we need to switch the rotation if it is behind it so the front side always matches.
+                if(Vector3.Dot(closestObject.gameObject.GetComponent<Collider>().bounds.max-this.gameObject.transform.position,
+                closestObject.gameObject.transform.forward) < 0) {
+                    Vector3 rotVec = wall.gameObject.transform.rotation.eulerAngles;
+                    rotVec.x *= -1; //flip x
+                    rotVec.y = (rotVec.y + 180) % 360;
+
+                    Quaternion rot = Quaternion.Euler(rotVec);
+                    this.gameObject.transform.rotation = rot;
+                } else {
+                    Debug.Log("else:");
+                    this.gameObject.transform.rotation = wall.gameObject.transform.rotation;
+                }
+                
+
             }
         }
 
