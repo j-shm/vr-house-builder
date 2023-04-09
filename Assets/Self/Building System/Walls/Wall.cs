@@ -141,9 +141,11 @@ public class Wall : MonoBehaviour
         
         Vector3 nearpoint = GetNearestPoint(point);
 
+        /*
         GameObject cube = CubeCreator(baseWindow);
 
         Collider col = cube.GetComponent<Collider>();
+        */
 
         return nearpoint;
     }

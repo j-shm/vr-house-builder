@@ -144,11 +144,12 @@ public class Importer : MonoBehaviour
             }
         }
     }
+
     //if you do it instantly it wont cut the wall out.
+    //this may be broken on less performant pcs im not sure.
     IEnumerator SetHeldOfObjectWithWait(Window comp) {
-        comp.SetHeld();
-        yield return new WaitForSeconds(0.2f);
-        comp.SetHeld();
+        yield return new WaitForSeconds(0.5f);
+        comp.LoadWindow();
     }
 
     public Vector3 ArrayToVector(float[] vecArray) {

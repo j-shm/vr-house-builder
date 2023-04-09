@@ -70,7 +70,7 @@ public class Window : Object
                     Vector3 rotVec = wall.gameObject.transform.rotation.eulerAngles;
                     rotVec.x *= -1; //flip x
                     rotVec.y = (rotVec.y + 180) % 360;
-
+                    Debug.Log(rotVec);
                     Quaternion rot = Quaternion.Euler(rotVec);
                     this.gameObject.transform.rotation = rot;
                 } else {
@@ -156,6 +156,30 @@ public class Window : Object
     public Vector3 GetPos() {
         return new Vector3(transform.position.x,transform.position.y + centerBound, transform.position.z);
     }
+
+    public void LoadWindow() {
+        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
+        GameObject closestObject = null;
+        Wall script = null;
+        float closestWallDist = -1;
+        
+        foreach(var wall in walls) {
+            var currentTrans = wall.transform.position;
+            var newDist = Vector3.Distance(transform.position,currentTrans);
+            if(closestWallDist < newDist) {
+                var _script = wall.gameObject.GetComponent<Wall>();
+                closestObject = wall.gameObject;
+                closestWallDist = newDist;
+                script = _script;
+            }
+        }
+        Debug.Log(script);
+        script.AddWindow(this.windowScript);
+        script.Cut();
+        oldWallScript = script;
+
+    }
+
     public override void SetHeld() {
         
         if(spotValid) {
