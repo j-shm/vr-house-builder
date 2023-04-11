@@ -138,30 +138,15 @@ public class Wall : MonoBehaviour
         Vector3 nearpoint = GetNearestPoint(point);
         Debug.Log(nearpoint);
 
-        //TODO: REMOVE FOR TESTING ONLY
-        temppointfortesing = nearpoint;
-        tempwindowfortesting = baseWindow.gameObject;
 
         //TODO: Change to OverlapAllocBox to improve performance
         var size = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
         if(Physics.OverlapBox(nearpoint+new Vector3(0,baseWindow.GetOffset(),0),new Vector3(size.x /2,size.y/2,size.z/2), Quaternion.identity,1<<LayerMask.NameToLayer("Object")).Length > 0) {
             return new Vector3(-.01f,-.01f,-.01f);
         }
-        
+
+        //need to check if the window goes off the wall: just use bounds
+
         return nearpoint;
-    }
-
-
-    Vector3 temppointfortesing;
-    GameObject tempwindowfortesting;
-    void OnDrawGizmosSelected()
-    {
-        if(temppointfortesing != null && tempwindowfortesting != null) {
-            var size = tempwindowfortesting.gameObject.GetComponent<Collider>().bounds.size;
-            Debug.Log("we drawing:)");
-            Gizmos.color = new Color(0.75f, 0.0f, 0.0f, 0.75f);
-            Gizmos.DrawWireCube(temppointfortesing+new Vector3(0,tempwindowfortesting.GetComponent<Window>().GetOffset(),0), new Vector3(size.x,size.y,size.z));
-        }
-
     }
 }
