@@ -155,6 +155,9 @@ public class Window : Object
     public Vector3 GetPos() {
         return new Vector3(transform.position.x,transform.position.y + centerBound, transform.position.z);
     }
+    public float GetOffset() {
+        return centerBound;
+    }
 
     public void LoadWindow() {
         Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));

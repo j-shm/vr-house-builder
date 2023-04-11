@@ -146,7 +146,8 @@ public class Wall : MonoBehaviour
         GameObject cube = CubeCreator(baseWindow);
         Collider col = cube.GetComponent<Collider>();
         */
-        foreach(var hit in Physics.OverlapBox(nearpoint,baseWindow.gameObject.transform.localScale / 2, Quaternion.identity)) {
+        var size = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
+        foreach(var hit in Physics.OverlapBox(nearpoint+new Vector3(0,baseWindow.GetOffset(),0),new Vector3(size.x /2,size.y/2,size.z/2), Quaternion.identity)) {
             if(hit.gameObject.layer == LayerMask.NameToLayer("Object") && hit.gameObject != baseWindow.gameObject) {
                 hit.gameObject.name += " problem!";
                return new Vector3(-.01f,-.01f,-.01f);
@@ -159,9 +160,10 @@ public class Wall : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         if(temppointfortesing != null && tempwindowfortesting != null) {
+            var size = tempwindowfortesting.gameObject.GetComponent<Collider>().bounds.size;
             Debug.Log("we drawing:)");
             Gizmos.color = new Color(0.75f, 0.0f, 0.0f, 0.75f);
-            Gizmos.DrawWireCube(temppointfortesing, tempwindowfortesting.transform.localScale);
+            Gizmos.DrawWireCube(temppointfortesing+new Vector3(0,tempwindowfortesting.GetComponent<Window>().GetOffset(),0), new Vector3(size.x,size.y,size.z));
         }
 
     }
