@@ -126,7 +126,7 @@ public class Wall : MonoBehaviour
 
 
     public Vector3 GetNearestPoint(Vector3 point) {
-        if(currentWallCollider != null) {
+        if(currentWallCollider != wallCollider && currentWallCollider != null) {
             this.wallCollider.enabled = true;
             var result = this.wallCollider.ClosestPoint(point);
             this.wallCollider.enabled = false;
@@ -139,16 +139,44 @@ public class Wall : MonoBehaviour
 
     
     public Vector3 GetNearestValidPoint(Window baseWindow, Vector3 point) {
-        
+        Debug.Log("i am " + this.gameObject.name);
         Vector3 nearpoint = GetNearestPoint(point);
-        Debug.Log(nearpoint);
-        if(nearpoint == baseWindow.gameObject.transform.position) 
+        if(nearpoint == baseWindow.gameObject.transform.position)  {
+            Debug.Log("nearpoint invalid.");
             return new Vector3(-.01f,-.01f,-.01f);
+        }
+            
         
+
+        Debug.Log("max x of the wall: " + wallCollider.bounds.max.x);
+        Debug.Log("max x of the window: " + baseWindow.gameObject.GetComponent<Collider>().bounds.max.x);
+        Debug.Log(wallCollider.bounds.max.x < baseWindow.gameObject.GetComponent<Collider>().bounds.max.x);
+        Debug.Log("min x of the wall: " + wallCollider.bounds.min.x);
+        Debug.Log("min x of the window: " + baseWindow.gameObject.GetComponent<Collider>().bounds.min.x);
+        Debug.Log(wallCollider.bounds.min.x > baseWindow.gameObject.GetComponent<Collider>().bounds.min.x);
+        Debug.Log("max y of the wall: " + wallCollider.bounds.max.y);
+        Debug.Log("max y of the window: " + baseWindow.gameObject.GetComponent<Collider>().bounds.max.y);
+        Debug.Log(wallCollider.bounds.max.y < baseWindow.gameObject.GetComponent<Collider>().bounds.max.y);
+        Debug.Log("min y of the wall: " + wallCollider.bounds.min.y);
+        Debug.Log("min y of the window: " + baseWindow.gameObject.GetComponent<Collider>().bounds.min.y);
+        Debug.Log(wallCollider.bounds.min.y > baseWindow.gameObject.GetComponent<Collider>().bounds.min.y);
+        Debug.Log("max z of the wall: " + wallCollider.bounds.max.z);
+        Debug.Log("max z of the window: " + baseWindow.gameObject.GetComponent<Collider>().bounds.max.z);
+        Debug.Log(wallCollider.bounds.max.z < baseWindow.gameObject.GetComponent<Collider>().bounds.max.z);
+        Debug.Log("min z of the wall: " + wallCollider.bounds.min.z);
+        Debug.Log("min z of the window: " + baseWindow.gameObject.GetComponent<Collider>().bounds.min.z);
+        Debug.Log(wallCollider.bounds.min.z > baseWindow.gameObject.GetComponent<Collider>().bounds.min.z);
+
+
+
+
+
+
 
         //TODO: Change to OverlapAllocBox to improve performance
         var size = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
         if(Physics.OverlapBox(nearpoint+new Vector3(0,baseWindow.GetOffset(),0),new Vector3(size.x /2,size.y/2,size.z/2), Quaternion.identity,1<<LayerMask.NameToLayer("Object")).Length > 0) {
+            Debug.Log("overlap");
             return new Vector3(-.01f,-.01f,-.01f);
         }
 
