@@ -126,7 +126,7 @@ public class Wall : MonoBehaviour
 
 
     public Vector3 GetNearestPoint(Vector3 point) {
-        if(currentWallCollider != null) {
+        if(currentWallCollider != wallCollider && currentWallCollider != null) {
             this.wallCollider.enabled = true;
             var result = this.wallCollider.ClosestPoint(point);
             this.wallCollider.enabled = false;
