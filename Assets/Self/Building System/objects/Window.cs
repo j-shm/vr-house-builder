@@ -34,7 +34,7 @@ public class Window : Object
 
         if(!isHeld) return;
 
-        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
+        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<LayerMask.NameToLayer("Wall")));
         GameObject closestObject = null;
         Wall script = null;
         float closestWallDist = -1;
@@ -146,7 +146,7 @@ public class Window : Object
     //slight modification to the orginal method to make sure the window is placed on the wall 
     //as if the window was placed using place() it gets off pos by a little bit.
     public void LoadWindow() {
-        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
+        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<LayerMask.NameToLayer("Wall")));
         GameObject closestObject = null;
         Wall script = null;
         float closestWallDist = -1;
