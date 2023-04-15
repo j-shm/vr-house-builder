@@ -78,7 +78,6 @@ public class Wall : MonoBehaviour
 
             MeshCollider newCol = currentWall.AddComponent<MeshCollider>();
             newCol.sharedMesh = currentWall.GetComponent<MeshFilter>().mesh;
-            newCol.convex = true;
             currentWallCollider = newCol;
             currentWall.layer = 7;
             
@@ -127,8 +126,14 @@ public class Wall : MonoBehaviour
 
 
     public Vector3 GetNearestPoint(Vector3 point) {
-        if(currentWallCollider != null)
-            return this.currentWallCollider.ClosestPoint(point);
+        if(currentWallCollider != null) {
+            this.wallCollider.enabled = true;
+            var result = this.wallCollider.ClosestPoint(point);
+            this.wallCollider.enabled = false;
+            return result; 
+            //currentWallCollider.ClosestPoint(point) doesnt work as you cant use convext collider
+        }
+            
         return this.wallCollider.ClosestPoint(point);
     }
 
@@ -137,7 +142,9 @@ public class Wall : MonoBehaviour
         
         Vector3 nearpoint = GetNearestPoint(point);
         Debug.Log(nearpoint);
-
+        if(nearpoint == baseWindow.gameObject.transform.position) 
+            return new Vector3(-.01f,-.01f,-.01f);
+        
 
         //TODO: Change to OverlapAllocBox to improve performance
         var size = baseWindow.gameObject.GetComponent<Collider>().bounds.size;

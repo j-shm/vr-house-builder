@@ -70,11 +70,9 @@ public class Window : Object
                     Vector3 rotVec = wall.gameObject.transform.rotation.eulerAngles;
                     rotVec.x *= -1; //flip x
                     rotVec.y = (rotVec.y + 180) % 360;
-                    Debug.Log(rotVec);
                     Quaternion rot = Quaternion.Euler(rotVec);
                     this.gameObject.transform.rotation = rot;
                 } else {
-                    Debug.Log("else:");
                     this.gameObject.transform.rotation = wall.gameObject.transform.rotation;
                 }
                 
