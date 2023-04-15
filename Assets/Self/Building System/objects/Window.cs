@@ -14,7 +14,6 @@ public class Window : Object
     private GameObject currentWall;
     private Wall oldWallScript;
     [SerializeField]
-    public GameObject MeshObject;
     private Window windowScript;
 
     private GameObject center;
@@ -32,16 +31,6 @@ public class Window : Object
 
         fowardBound = new Vector2(size.z/2,size.x/2);
         
-        if(col.GetType().Name.Equals("BoxCollider")) {
-            Transform temp = transform.Find("Scene/cutout");
-            if(temp == null) {
-                MeshObject = transform.Find("Scene").gameObject.GetComponentsInChildren<Transform>()[1].gameObject;
-            } else {
-                MeshObject = temp.gameObject;
-            }
-        } else {
-            MeshObject = this.gameObject;
-        }
         
     }
 
