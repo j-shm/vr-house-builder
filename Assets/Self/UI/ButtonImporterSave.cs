@@ -25,7 +25,6 @@ public class ButtonImporterSave : MonoBehaviour
     }
 
     void Load() {
-        Debug.Log("fun");
         levelLoader.Import(file);
     }
 

@@ -19,7 +19,7 @@ public class SaveLevel : MonoBehaviour
 
     public bool Save() {
         if(this.man == null) {
-            Debug.LogError("no object man");
+            Debug.LogError("no object manager");
             return false;
         }
         if(this.man.GetObjects().Count == 0) {
