@@ -9,17 +9,19 @@ public class Window : Object
     [SerializeField]
     public Vector3 size;
     private float centerBound;
-
+    public Vector2 fowardBound;
     private Wall wallScript;
     private GameObject currentWall;
     private Wall oldWallScript;
+    [SerializeField]
+    public GameObject MeshObject;
     private Window windowScript;
 
     private GameObject center;
     void Start()
     {
         Setup();
-        windowScript = GetComponent<Window>(); //this doesnt seem right because i feel like there should be a method for this
+        windowScript = GetComponent<Window>(); //this doesnt seem right but ii cant find method for doing it
         col = GetComponent<Collider>();
         invisCol = invis.GetComponent<Collider>();
         size = col.bounds.size;
@@ -27,6 +29,20 @@ public class Window : Object
         center = transform.Find("center").gameObject;
 
         center.transform.localPosition = new Vector3(0,centerBound,-col.bounds.max.z);
+
+        fowardBound = new Vector2(size.z/2,size.x/2);
+        
+        if(col.GetType().Name.Equals("BoxCollider")) {
+            Transform temp = transform.Find("Scene/cutout");
+            if(temp == null) {
+                MeshObject = transform.Find("Scene").gameObject.GetComponentsInChildren<Transform>()[1].gameObject;
+            } else {
+                MeshObject = temp.gameObject;
+            }
+        } else {
+            MeshObject = this.gameObject;
+        }
+        
     }
 
 
@@ -34,12 +50,11 @@ public class Window : Object
 
         if(!isHeld) return;
 
-        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<LayerMask.NameToLayer("Wall")));
+        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
         GameObject closestObject = null;
         Wall script = null;
         float closestWallDist = -1;
         
-        //we need to get the closest wall.
         foreach(var wall in walls) {
             var currentTrans = wall.transform.position;
             var newDist = Vector3.Distance(transform.position,currentTrans);
@@ -104,16 +119,17 @@ public class Window : Object
             Kill();
         }
 
-        ChangeDrawings();
-
         if(!spotValid) {
-            //return to orginal position
             transform.position = initalPos;
             transform.rotation = initalRotation;
+            ChangeDrawings();
             return;
         }
 
-        GoToObjectFromChild(); 
+        ChangeDrawings();
+
+
+        GoToObjectFromChild();
         wallScript.AddWindow(this.windowScript);
         wallScript.Cut();
         
@@ -122,7 +138,6 @@ public class Window : Object
 
     }
 
-    //this is used to make sure the window lines up with the wall by moving the child to the position of the spot
     void GoToObjectFromChild() {
         Vector3 AbsoluteMovement = spot - 
         center.transform.position;
@@ -132,10 +147,9 @@ public class Window : Object
 
     public override void DrawLine() {
         line.SetPosition(0,GetPos());
-        line.SetPosition(1,new Vector3(spot.x,spot.y + GetOffset(),spot.z));
+        line.SetPosition(1,new Vector3(spot.x,spot.y + centerBound,spot.z));
     }
 
-    //get the position of the wall including the offset for the windows.
     public Vector3 GetPos() {
         return new Vector3(transform.position.x,transform.position.y + centerBound, transform.position.z);
     }
@@ -143,10 +157,8 @@ public class Window : Object
         return centerBound;
     }
 
-    //slight modification to the orginal method to make sure the window is placed on the wall 
-    //as if the window was placed using place() it gets off pos by a little bit.
     public void LoadWindow() {
-        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<LayerMask.NameToLayer("Wall")));
+        Collider[] walls = Physics.OverlapSphere(transform.position, 3f,(1<<7));
         GameObject closestObject = null;
         Wall script = null;
         float closestWallDist = -1;
@@ -161,6 +173,7 @@ public class Window : Object
                 script = _script;
             }
         }
+        Debug.Log(script);
         script.AddWindow(this.windowScript);
         script.Cut();
         oldWallScript = script;
@@ -168,8 +181,7 @@ public class Window : Object
     }
 
     public override void SetHeld() {
-        isHeld = !isHeld;
-
+        
         if(spotValid) {
             Place();
         } else {
@@ -179,9 +191,9 @@ public class Window : Object
                 oldWallScript.AddWindow(this.windowScript);
                 oldWallScript.Cut();
             }
-        }
-
-
+            }
+        
+        isHeld = !isHeld;
         if(isHeld && oldWallScript != null) {
             oldWallScript.RemoveWindow(this.windowScript);
             oldWallScript.Cut();

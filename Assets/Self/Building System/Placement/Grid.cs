@@ -25,21 +25,21 @@ public class Grid : MonoBehaviour
         if(invis == null) {
             //this all needs optimised to only calculate the collisons once.
 
-            Collider[] groundHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<LayerMask.NameToLayer("Teleport")));
+            Collider[] groundHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<31));
             if(groundHitColliders.Length == 0) {
                 return false;
             }
-            Collider[] hitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<LayerMask.NameToLayer("Object")));
+            Collider[] hitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<6));
             if(hitColliders.Length != 0) {
                 return false;
             }
-            Collider[] wallHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<LayerMask.NameToLayer("Wall")));
+            Collider[] wallHitColliders = Physics.OverlapSphere(pos, 0.25f,(1<<7));
             if(wallHitColliders.Length != 0) {
                 return false;
             }
 
             
-            if (Physics.Linecast (playerPos,pos,out RaycastHit hitInfo,(1<<LayerMask.NameToLayer("Wall")))) {
+            if (Physics.Linecast (playerPos,pos,out RaycastHit hitInfo,(1<<7))) {
                 return false;
             }
             
