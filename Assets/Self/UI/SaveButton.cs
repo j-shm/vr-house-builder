@@ -13,6 +13,8 @@ public class SaveButton : MonoBehaviour
 
     private string saveName;
 
+    private float yieldTime;
+
     void Setup() {
         saveName = GetSaveName();
         this.textcomp.text = $@"<size=8>Save Game</size><size=6>
@@ -26,7 +28,13 @@ public class SaveButton : MonoBehaviour
         textcomp = this.gameObject.transform.Find("Frontplate/AnimatedContent/Text").gameObject.GetComponent<TMP_Text>();
         Setup();
     }
-
+    void Update() {
+        if(yieldTime > 0) {
+            yieldTime -= Time.deltaTime;
+            return;
+        }
+        Setup();
+    }
     private string GetSaveName() {
         return $"save_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
     }
@@ -38,6 +46,7 @@ public class SaveButton : MonoBehaviour
             return;
         }
         this.textcomp.text = Save();
+        yieldTime = 1.5f;
     }
 
     private string Save() {
