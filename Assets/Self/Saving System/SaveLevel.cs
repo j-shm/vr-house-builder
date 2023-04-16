@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
+using System;
 
 public class SaveLevel : MonoBehaviour
 {
@@ -13,11 +14,11 @@ public class SaveLevel : MonoBehaviour
     {
         if(doSave) {
             doSave = false;
-            Save();
+            Save($"save_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.json");
         }
     }
 
-    public bool Save() {
+    public bool Save(string saveName) {
         if(this.man == null) {
             Debug.LogError("no object man");
             return false;
@@ -26,7 +27,14 @@ public class SaveLevel : MonoBehaviour
             Debug.LogError("nothing to save");
             return false;
         }
-
+        string savePath = Application.persistentDataPath + "/saves/";
+        if (!Directory.Exists(savePath)) {
+            Directory.CreateDirectory(savePath);
+        }
+        if(File.Exists(savePath+saveName)) {
+            Debug.Log("file already exists");
+            return false;
+        }
 
         GameObject[] objects = this.man.GetObjects().ToArray();
         List<SerialObject> serialObjectsList = new List<SerialObject>();
@@ -36,12 +44,6 @@ public class SaveLevel : MonoBehaviour
         }
         SerialObjects serialObjects = new SerialObjects(serialObjectsList.ToArray()); 
         string jsonoutput = JsonConvert.SerializeObject(serialObjects);
-        string savePath = Application.persistentDataPath + "/saves/";
-        if (!Directory.Exists(savePath)) {
-            Directory.CreateDirectory(savePath);
-        }
-
-        string saveName = "save.json"; // allow to be changed!
 
         File.WriteAllText(savePath+saveName, jsonoutput);
         
