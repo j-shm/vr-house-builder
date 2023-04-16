@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
 
-//TODO CREATING THE INVIS OBJECT
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(LineRenderer))]
 public class Object : MonoBehaviour
