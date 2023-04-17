@@ -10,7 +10,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Importer : MonoBehaviour
 {
-    private string dirPath = $"C:/Users/{Environment.UserName}/Downloads/stuff/";
+    private string dirPath;
 
     [SerializeField]
     private bool importEverything = true;
@@ -26,6 +26,7 @@ public class Importer : MonoBehaviour
     public ObjectManager man;
     void Start()
     {
+        dirPath = $"{Application.persistentDataPath}/models/";
         if(importEverything) {
             ImportAll();
         } else {
