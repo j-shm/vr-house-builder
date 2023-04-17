@@ -58,7 +58,8 @@ public class Window : Object
                 closestObject.gameObject.transform.forward) < 0) {
                     Vector3 rotVec = wall.gameObject.transform.rotation.eulerAngles;
                     rotVec.x *= -1; //flip x
-                    rotVec.y = (rotVec.y + 180) % 360;
+                    rotVec.y = ((rotVec.y + 180) % 360);
+                    
                     Quaternion rot = Quaternion.Euler(rotVec);
                     this.gameObject.transform.rotation = rot;
                 } else {
@@ -109,6 +110,7 @@ public class Window : Object
         }
 
         if(!spotValid) {
+            Debug.Log("Invalid Spot");
             transform.position = initalPos;
             transform.rotation = initalRotation;
             ChangeDrawings();

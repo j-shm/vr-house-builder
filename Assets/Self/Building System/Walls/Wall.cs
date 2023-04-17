@@ -33,7 +33,6 @@ public class Wall : MonoBehaviour
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        Destroy(cube);
         return newWall;
     }
 
@@ -145,6 +144,34 @@ public class Wall : MonoBehaviour
         if(nearpoint == baseWindow.gameObject.transform.position) 
             return new Vector3(-.01f,-.01f,-.01f);
         
+        float wallRotation = Mathf.Abs(this.gameObject.transform.rotation.eulerAngles.y);
+        Debug.Log(wallRotation);
+        Collider windowCollider = baseWindow.gameObject.GetComponent<Collider>();
+
+        if(wallRotation == 0 || wallRotation == 90 || wallRotation == 180 
+        || wallRotation == 270|| wallRotation == 360) {
+            if(wallCollider.bounds.max.y < windowCollider.bounds.max.y 
+            || wallCollider.bounds.min.y > windowCollider.bounds.min.y) {
+                Debug.Log("invvalid y");
+                return new Vector3(-.01f,-.01f,-.01f);
+            }
+            if(wallRotation == 90 || wallRotation == 270) {
+                if(wallCollider.bounds.max.z < windowCollider.bounds.max.z 
+                || wallCollider.bounds.min.z > windowCollider.bounds.min.z) {
+                    return new Vector3(-.01f,-.01f,-.01f);
+                }
+            } else {
+                if(wallCollider.bounds.max.x < windowCollider.bounds.max.x 
+|| wallCollider.bounds.min.x > windowCollider.bounds.min.x) {
+                    return new Vector3(-.01f,-.01f,-.01f);
+                }
+            }
+        } else {
+            Debug.Log("this wall does not have a valid rotation and therefore cannot be checked");
+        }
+
+
+
 
         //TODO: Change to OverlapAllocBox to improve performance
         var size = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
