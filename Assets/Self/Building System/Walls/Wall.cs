@@ -125,12 +125,13 @@ public class Wall : MonoBehaviour
 
 
     public Vector3 GetNearestPoint(Vector3 point) {
-        if(currentWallCollider != wallCollider && currentWallCollider != null) {
+        if(currentWallCollider != wallCollider && currentWallCollider != null) {       
+            // note we cant use the currentWallCollider because it is a mesh collider that is not convexand 
+            // it doesnt have a ClosestPoint function      
             this.wallCollider.enabled = true;
             var result = this.wallCollider.ClosestPoint(point);
             this.wallCollider.enabled = false;
             return result; 
-            //currentWallCollider.ClosestPoint(point) doesnt work as you cant use convext collider
         }
             
         return this.wallCollider.ClosestPoint(point);
@@ -140,19 +141,18 @@ public class Wall : MonoBehaviour
     public Vector3 GetNearestValidPoint(Window baseWindow, Vector3 point) {
         
         Vector3 nearpoint = GetNearestPoint(point);
-        Debug.Log(nearpoint);
+
         if(nearpoint == baseWindow.gameObject.transform.position) 
             return new Vector3(-.01f,-.01f,-.01f);
         
         float wallRotation = Mathf.Abs(this.gameObject.transform.rotation.eulerAngles.y);
-        Debug.Log(wallRotation);
+
         Collider windowCollider = baseWindow.gameObject.GetComponent<Collider>();
 
         if(wallRotation == 0 || wallRotation == 90 || wallRotation == 180 
         || wallRotation == 270|| wallRotation == 360) {
             if(wallCollider.bounds.max.y < windowCollider.bounds.max.y 
             || wallCollider.bounds.min.y > windowCollider.bounds.min.y) {
-                Debug.Log("invvalid y");
                 return new Vector3(-.01f,-.01f,-.01f);
             }
             if(wallRotation == 90 || wallRotation == 270) {
@@ -162,24 +162,23 @@ public class Wall : MonoBehaviour
                 }
             } else {
                 if(wallCollider.bounds.max.x < windowCollider.bounds.max.x 
-|| wallCollider.bounds.min.x > windowCollider.bounds.min.x) {
+                || wallCollider.bounds.min.x > windowCollider.bounds.min.x) {
                     return new Vector3(-.01f,-.01f,-.01f);
                 }
             }
         } else {
             Debug.Log("this wall does not have a valid rotation and therefore cannot be checked");
+            //TODO: add a check for the other rotations
+            //this could be done by firing a raycast from one side to the other
+            //and checking if it hits the window twice before it hits the other side of the wall
+            //if it does then the window is valid
         }
-
-
-
 
         //TODO: Change to OverlapAllocBox to improve performance
         var size = baseWindow.gameObject.GetComponent<Collider>().bounds.size;
         if(Physics.OverlapBox(nearpoint+new Vector3(0,baseWindow.GetOffset(),0),new Vector3(size.x /2,size.y/2,size.z/2), Quaternion.identity,1<<LayerMask.NameToLayer("Object")).Length > 0) {
             return new Vector3(-.01f,-.01f,-.01f);
         }
-
-        //need to check if the window goes off the wall: just use bounds
 
         return nearpoint;
     }
