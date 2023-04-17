@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using TMPro;
 using Microsoft.MixedReality.Toolkit.UX;
 using UnityEngine.XR.Interaction.Toolkit;
 
