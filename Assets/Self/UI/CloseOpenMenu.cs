@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 public class CloseOpenMenu : MonoBehaviour
 {
     AdditionalRightController interactions;
@@ -12,7 +12,6 @@ public class CloseOpenMenu : MonoBehaviour
         interactions.Right.Enable();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(interactions.Right.UIOPEN.WasPressedThisFrame()) {
