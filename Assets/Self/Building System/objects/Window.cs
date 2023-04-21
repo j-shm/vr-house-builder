@@ -5,11 +5,9 @@ using UnityEngine;
 public class Window : Object
 {
     private Collider col;
-    private Collider invisCol;
     [SerializeField]
     public Vector3 size;
     private float centerBound;
-    public Vector2 fowardBound;
     private Wall wallScript;
     private GameObject currentWall;
     private Wall oldWallScript;
@@ -22,14 +20,12 @@ public class Window : Object
         Setup();
         windowScript = GetComponent<Window>(); //this doesnt seem right but ii cant find method for doing it
         col = GetComponent<Collider>();
-        invisCol = invis.GetComponent<Collider>();
         size = col.bounds.size;
         centerBound = col.bounds.center.y;
         center = transform.Find("center").gameObject;
 
         center.transform.localPosition = new Vector3(0,centerBound,-col.bounds.max.z);
 
-        fowardBound = new Vector2(size.z/2,size.x/2);
         
         
     }

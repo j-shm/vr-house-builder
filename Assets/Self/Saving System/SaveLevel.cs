@@ -17,22 +17,19 @@ public class SaveLevel : MonoBehaviour
         }
     }
 
-    public bool Save(string saveName) {
+    public string Save(string saveName) {
         if(this.man == null) {
-            Debug.LogError("no object man");
-            return false;
+            return "no object man";
         }
         if(this.man.GetObjects().Count == 0) {
-            Debug.LogError("nothing to save");
-            return false;
+            return "nothing to save";
         }
         string savePath = Application.persistentDataPath + "/saves/";
         if (!Directory.Exists(savePath)) {
             Directory.CreateDirectory(savePath);
         }
         if(File.Exists(savePath+saveName)) {
-            Debug.Log("file already exists");
-            return false;
+            return "file already exists";
         }
 
         GameObject[] objects = this.man.GetObjects().ToArray();
@@ -46,7 +43,7 @@ public class SaveLevel : MonoBehaviour
 
         File.WriteAllText(savePath+saveName, jsonoutput);
         
-        return true;
+        return "";
     }
 
     private SerialObject ObjectToSerialObject(GameObject obj) {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Parabox.CSG;
 
+//used to cut objects with the CSG system mostly to make doors
 public class CutObjects : MonoBehaviour
 {
     public bool cut;
@@ -11,7 +12,7 @@ public class CutObjects : MonoBehaviour
     public GameObject objectB;
     public GameObject objectResult;
 
-    // Update is called once per frame
+
     void Update()
     {
         if(cut) {

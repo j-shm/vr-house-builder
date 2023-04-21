@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    List<GameObject> objects = new List<GameObject>();
+    private List<GameObject> objects = new List<GameObject>();
 
     public void AddObject(GameObject obj) {
         objects.Add(obj);

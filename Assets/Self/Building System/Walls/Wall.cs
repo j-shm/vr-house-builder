@@ -18,7 +18,6 @@ public class Wall : MonoBehaviour
 
     [SerializeField]
     private List<Window> windows = new List<Window>();
-    private Material mat;
     public bool cut;
 
 
@@ -88,8 +87,6 @@ public class Wall : MonoBehaviour
     }
     
     public void AddWindow(Window windowScript) {
-        GameObject window = windowScript.gameObject;
-        float winRot = window.gameObject.transform.rotation.y;       
         windows.Add(windowScript);
     }
     public void RemoveWindow(Window windowScript) {

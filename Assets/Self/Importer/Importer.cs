@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
+//used for importing gltf files into the game 
 public class Importer : MonoBehaviour
 {
     private string dirPath;
@@ -94,11 +95,15 @@ public class Importer : MonoBehaviour
                 }
                
             }
-        } else if(forceDetails) {
+        } else {
+            Debug.LogError("no json file found for " + file);
             return;
         }
         
-
+        if(!System.IO.File.Exists($"{dirPath}{file}.glb")) {
+            Debug.LogError("no glb file found for " + file);
+            return;
+        }
         byte[] data = File.ReadAllBytes($"{dirPath}{file}.glb");
 
         GltfImport gltf = new GltfImport();
@@ -121,8 +126,7 @@ public class Importer : MonoBehaviour
                     comp.SetDetails(new ObjectDetails(name,description,type));
                     comp.SetInvis(invis);
                     comp.deleteButton = deleteButton;
-                    comp.SetMan(man);
-
+                    comp.SetMan(man); 
                     GameObject centerPoint = new GameObject("center");
                     centerPoint.transform.parent = placedModel.gameObject.transform;
                     if(objPos != null) { 
@@ -142,7 +146,13 @@ public class Importer : MonoBehaviour
                     placedModel.gameObject.transform.eulerAngles = ArrayToVector(objRot);
                     placedModel.gameObject.transform.localScale = ArrayToVector(objScale);
                 }
+            } else {
+                Debug.LogError("failed to load " + file);
+                return;
             }
+        } else {
+            Debug.LogError("failed to load " + file);
+            return;
         }
     }
 

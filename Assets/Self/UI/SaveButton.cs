@@ -53,11 +53,12 @@ public class SaveButton : MonoBehaviour
         if(this.saveLevel == null) {
             return "SAVE IMPORTER NOT FOUND";
         }
-        if(saveLevel.Save(saveName)) {
+        string result = saveLevel.Save(saveName);
+        if(result == "") {
             return $@"<size=8>Saved as:</size><size=6>
 <alpha=#88>{saveName}</size>";
         }
-        return "SAVE FAILED CHECK LOG";
+        return result;
     }
 
     protected virtual void OnSelectEntered(SelectEnterEventArgs args) => SaveHandler();
