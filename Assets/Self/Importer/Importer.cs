@@ -104,14 +104,27 @@ public class Importer : MonoBehaviour
             Debug.LogError("no glb file found for " + file);
             return;
         }
+
         byte[] data = File.ReadAllBytes($"{dirPath}{file}.glb");
 
         GltfImport gltf = new GltfImport();
         bool success = await gltf.LoadGltfBinary(data);
         if (success) {
             Transform placedModel = new GameObject(file).transform;
-            success = await gltf.InstantiateMainSceneAsync( placedModel );
-            if(success) {
+            if(placedModel == null) {
+                Debug.LogError("placedModel is null for " + file);
+                return;
+            }
+
+            bool successofinstantiate = false;
+            try {
+                successofinstantiate = await gltf.InstantiateMainSceneAsync( placedModel );
+            } catch(Exception e) {
+                Debug.LogError("we didn't manage to instantiate: " + e);
+            }
+            
+            Debug.LogError("this is the result " + successofinstantiate);
+            if(successofinstantiate) {
                 this.man.AddObject(placedModel.gameObject);
                 if(!light.Equals(new Vector3(0f,0f,0f))) {
                     GameObject lightGameObject = new GameObject("light");

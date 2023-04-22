@@ -6,15 +6,8 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 public class LoadLevel : MonoBehaviour
 {
-    public bool import;
+
     public Importer importer;
-    void Update()
-    {
-        if(import) {
-            import = false;
-            Import(Application.persistentDataPath + "/saves/save.json");
-        }
-    }
 
     public void Import(string file) {
         if(System.IO.File.Exists(file)) {

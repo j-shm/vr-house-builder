@@ -27,7 +27,7 @@ public class Window : Object
         center.transform.localPosition = new Vector3(0,centerBound,-col.bounds.max.z);
 
         
-        
+    
     }
 
 
