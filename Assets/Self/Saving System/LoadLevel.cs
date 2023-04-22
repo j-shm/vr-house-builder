@@ -6,11 +6,14 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 public class LoadLevel : MonoBehaviour
 {
-
     public Importer importer;
-
+    public ObjectManager man;
     public void Import(string file) {
         if(System.IO.File.Exists(file)) {
+            var objectsInScene = man.GetObjects();
+            for (int i = objectsInScene.Count - 1; i >= 0; i--) {
+                objectsInScene[i].GetComponent<Object>().Kill();
+            }
             try {
                 JObject o1 = JObject.Parse(File.ReadAllText(file));
                 var objs = o1["objects"];

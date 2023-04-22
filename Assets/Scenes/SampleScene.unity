@@ -3610,8 +3610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f4b862663bb46e4088ffcc676ddb957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  import: 1
   importer: {fileID: 1232912973}
+  man: {fileID: 1232912975}
 --- !u!1 &1251911519
 GameObject:
   m_ObjectHideFlags: 0

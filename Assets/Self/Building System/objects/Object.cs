@@ -271,7 +271,7 @@ public class Object : MonoBehaviour
         return boxCol;
     }
 
-    protected void Kill() {
+    public void Kill() {
         man.RemoveObject(this.gameObject);
         Destroy(this.gameObject);
     }

@@ -123,7 +123,6 @@ public class Importer : MonoBehaviour
                 Debug.LogError("we didn't manage to instantiate: " + e);
             }
             
-            Debug.LogError("this is the result " + successofinstantiate);
             if(successofinstantiate) {
                 this.man.AddObject(placedModel.gameObject);
                 if(!light.Equals(new Vector3(0f,0f,0f))) {
