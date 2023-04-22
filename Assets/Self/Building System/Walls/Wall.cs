@@ -32,6 +32,7 @@ public class Wall : MonoBehaviour
         GameObject newWall = new GameObject();
         newWall.AddComponent<MeshFilter>().sharedMesh = result.mesh;
         newWall.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        Destroy(cube);
         return newWall;
     }
 
