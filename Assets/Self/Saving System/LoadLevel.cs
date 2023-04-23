@@ -10,13 +10,20 @@ public class LoadLevel : MonoBehaviour
     public ObjectManager man;
     public void Import(string file) {
         if(System.IO.File.Exists(file)) {
+
+            //remove all objects currently in scene
             var objectsInScene = man.GetObjects();
             for (int i = objectsInScene.Count - 1; i >= 0; i--) {
                 objectsInScene[i].GetComponent<Object>().Kill();
             }
+
             try {
+                
+                //get all the objects in the file
                 JObject o1 = JObject.Parse(File.ReadAllText(file));
                 var objs = o1["objects"];
+
+                //import each object
                 foreach(var obj in objs) {
                     string name = (string)obj["name"];
                     float[] objPos = ((JArray)obj["position"]).ToObject<float[]>();

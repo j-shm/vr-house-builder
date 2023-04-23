@@ -107,6 +107,7 @@ public class Wall : MonoBehaviour
     private GameObject CreateCube(Window baseWindow) {
         return CubeCreator(baseWindow);
     }
+    // create and return a cube that is the same size as the window 
     private GameObject CubeCreator(Window baseWindow, bool visual = false) {
         var extension = 10;
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

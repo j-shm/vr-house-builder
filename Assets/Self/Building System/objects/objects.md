@@ -12,7 +12,7 @@ Export this model as a .glb and give it a name.
 
 ### Create Json File
 
-Create a .json file in the same directory with the same name e.g window.glb window.json. Fill in infomation about the object here's the format:
+Create a .json file in the same directory with the same name e.g window.glb window.json. Fill in information about the object here's the format:
 
 ```json
 {
@@ -27,7 +27,3 @@ Create a .json file in the same directory with the same name e.g window.glb wind
 ```
 
 `type` can either be `object` or `window`
-
-## Windows
-
-Window's should have any extra details defined as EXCLUDE. The main part of the window should be the only part that is not excluded. E.g a overhang should be excluded.

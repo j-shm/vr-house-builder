@@ -78,7 +78,7 @@ public class Importer : MonoBehaviour
                 JObject o1 = JObject.Parse(File.ReadAllText($"{dirPath}{file}.json"));
                 title = (string)o1["catalog"]["name"];
                 description = (string)o1["catalog"]["description"];
-                type = (string)o1["infomation"]["type"]; //either window or object at the minute
+                type = (string)o1["information"]["type"]; //either window or object at the minute
                 
                 if(o1["light"] != null) {
                     string temporaryTransform = (string)o1["light"]["transform"];
