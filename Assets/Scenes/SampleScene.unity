@@ -3548,7 +3548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   importEverything: 0
-  fileNames: duck
+  fileNames: LetThereBeMoreLight
   forceDetails: 1
   leftHand: {fileID: 1010738217276881514, guid: 18c412191cdc9274897f101c7fd5316f,
     type: 3}
